@@ -6,7 +6,7 @@
 //Map checker
 aridmaps = ["Altis","Kunduz","Malden","tem_anizay","takistan"];
 tropicalmaps = ["Tanoa"];
-temperatemaps = ["Enoch","chernarus_summer","vt7","Tembelan"];
+temperatemaps = ["Enoch","chernarus_summer","vt7","Tembelan","chernarusredux"];
 arcticmaps = ["Chernarus_Winter"];
 //Mod selector
 
