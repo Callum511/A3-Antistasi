@@ -52,7 +52,7 @@ NATOOfficer2 = "rhsusf_army_ucp_rifleman_101st";
 NATOBodyG = "rhsusf_army_ucp_rifleman_1stcav";
 NATOCrew = "rhsusf_usmc_marpat_wd_crewman";
 NATOUnarmed = "B_G_Survivor_F";
-NATOMarksman = "rhsusf_usmc_marpat_wd_marksman";
+NATOMarksman = "rhsusf_usmc_marpat_wd_sniper";
 staticCrewOccupants = "rhsusf_usmc_marpat_wd_rifleman";
 NATOPilot = "rhsusf_airforce_jetpilot";
 
@@ -60,7 +60,7 @@ NATOPilot = "rhsusf_airforce_jetpilot";
 if (gameMode != 4) then
 	{
 	FIARifleman = "rhsgref_hidf_rifleman";
-	FIAMarksman = "rhsgref_hidf_marksman";
+	FIAMarksman = "rhsgref_hidf_sniper";
 	};
 
 //Police Units
@@ -73,21 +73,21 @@ policeGrunt = "rhsusf_army_ucp_rifleman_82nd";
 //Military Groups
 //Teams
 groupsNATOSentry = ["rhsusf_usmc_marpat_wd_grenadier",NATOGrunt];
-groupsNATOSniper = ["rhsusf_socom_marsoc_sniper","rhsusf_socom_marsoc_spotter"];
+groupsNATOSniper = ["rhsusf_socom_marsoc_sniper","rhsusf_socom_marsoc_cso_mk17_light"];
 groupsNATOsmall = [groupsNATOSentry,groupsNATOSniper];
 //Fireteams
 groupsNATOAA = ["rhsusf_usmc_marpat_wd_teamleader","rhsusf_usmc_marpat_wd_autorifleman","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_stinger"];
 groupsNATOAT = ["rhsusf_usmc_marpat_wd_teamleader","rhsusf_usmc_marpat_wd_autorifleman","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_javelin"];
 groupsNATOmid = [["rhsusf_usmc_marpat_wd_teamleader","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_riflemanat"],groupsNATOAA,groupsNATOAT];
 //Squads
-NATOSquad = ["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_teamleader","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_marksman","rhsusf_navy_marpat_wd_medic"];
+NATOSquad = ["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_teamleader","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_marksman","rhsusf_navy_marpat_wd_medic","rhsusf_usmc_marpat_wd_sniper"];
 NATOSpecOp = ["rhsusf_socom_marsoc_teamleader","rhsusf_socom_marsoc_teamchief","rhsusf_socom_marsoc_cso_mk17","rhsusf_socom_marsoc_marksman","rhsusf_socom_marsoc_cso_breacher","rhsusf_socom_marsoc_cso_eod","rhsusf_socom_marsoc_cso_grenadier","rhsusf_socom_marsoc_sarc"];
 groupsNATOSquad =
 	[
 	NATOSquad,
-	["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_machinegunner","rhsusf_usmc_marpat_wd_riflemanat","rhsusf_usmc_marpat_wd_riflemanat","rhsusf_usmc_marpat_wd_grenadier","rhsusf_usmc_marpat_wd_javelin","rhsusf_usmc_marpat_wd_javelin_assistant","rhsusf_navy_marpat_wd_medic"],
-	["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_machinegunner","rhsusf_usmc_marpat_wd_riflemanat","rhsusf_usmc_marpat_wd_grenadier","rhsusf_usmc_marpat_wd_grenadier","rhsusf_usmc_marpat_wd_stinger","rhsusf_usmc_marpat_wd_rifleman_light","rhsusf_navy_marpat_wd_medic"],
-	["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_teamleader","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_explosives","rhsusf_navy_marpat_wd_medic"]
+	["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_machinegunner","rhsusf_usmc_marpat_wd_riflemanat","rhsusf_usmc_marpat_wd_riflemanat","rhsusf_usmc_marpat_wd_grenadier","rhsusf_usmc_marpat_wd_javelin","rhsusf_usmc_marpat_wd_javelin_assistant","rhsusf_navy_marpat_wd_medic","rhsusf_usmc_marpat_wd_sniper"],
+	["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_machinegunner","rhsusf_usmc_marpat_wd_riflemanat","rhsusf_usmc_marpat_wd_grenadier","rhsusf_usmc_marpat_wd_grenadier","rhsusf_usmc_marpat_wd_stinger","rhsusf_usmc_marpat_wd_rifleman_light","rhsusf_navy_marpat_wd_medic","rhsusf_usmc_marpat_wd_sniper"],
+	["rhsusf_usmc_marpat_wd_squadleader","rhsusf_usmc_marpat_wd_teamleader","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_autorifleman_m249","rhsusf_usmc_marpat_wd_rifleman_m4","rhsusf_usmc_marpat_wd_explosives","rhsusf_navy_marpat_wd_medic","rhsusf_usmc_marpat_wd_sniper"]
 	];
 
 //Militia Groups
@@ -120,8 +120,8 @@ groupsNATOGen = [policeOfficer,policeGrunt];
 //Military Vehicles
 //Lite
 vehNATOBike = "B_Quadbike_01_F";
-vehNATOLightArmed = ["rhsusf_m1025_w_s_m2","rhsusf_CGRCAT1A2_M2_usmc_wd","rhsusf_CGRCAT1A2_Mk19_usmc_wd","rhsusf_M1117_W","rhsusf_M1220_M2_usarmy_wd","rhsusf_M1237_M2_usarmy_wd","rhsusf_M1238A1_M2_socom_wd","rhsusf_m1045_w_s","rhsusf_m1240a1_m2_usmc_wd","rhsusf_m1240a1_mk19_usmc_wd","rhsusf_m1240a1_m240_usmc_wd"];
-vehNATOLightUnarmed = ["rhsusf_m1025_w_s","rhsusf_m998_w_s_2dr","rhsusf_m998_w_s_2dr_fulltop","rhsusf_m998_w_s_4dr","rhsusf_CGRCAT1A2_usmc_wd","rhsusf_M1232_usarmy_wd","rhsusf_m1240a1_usmc_wd"];
+vehNATOLightArmed = ["rhsusf_m1025_w_s_m2","rhsusf_CGRCAT1A2_M2_usmc_wd","rhsusf_CGRCAT1A2_Mk19_usmc_wd","rhsusf_M1117_W","rhsusf_M1220_M2_usarmy_wd","rhsusf_M1237_M2_usarmy_wd","rhsusf_M1238A1_M2_socom_wd","rhsusf_m1045_w_s","rhsusf_m1240a1_m2_usmc_wd","rhsusf_m1240a1_mk19_usmc_wd","rhsusf_m1240a1_m240_usmc_wd","rhsusf_m1151_m240_v3_usmc_wd"];
+vehNATOLightUnarmed = ["rhsusf_m1025_w_s","rhsusf_m998_w_s_2dr","rhsusf_m998_w_s_2dr_fulltop","rhsusf_m998_w_s_4dr","rhsusf_CGRCAT1A2_usmc_wd","rhsusf_M1232_usarmy_wd","rhsusf_m1240a1_usmc_wd","rhsusf_m1165_usmc_wd","rhsusf_m1240a1_usmc_wd"];
 vehNATOTrucks = ["rhsusf_M1078A1P2_WD_open_fmtv_usarmy","rhsusf_M1078A1P2_B_WD_fmtv_usarmy","rhsusf_M1078A1P2_B_WD_open_fmtv_usarmy","rhsusf_M1083A1P2_WD_fmtv_usarmy","rhsusf_M1083A1P2_B_M2_WD_fmtv_usarmy"];
 vehNATOCargoTrucks = [];
 vehNATOAmmoTruck = "rhsusf_M977A4_AMMO_BKIT_usarmy_wd";
