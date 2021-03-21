@@ -90,7 +90,7 @@ else
 	};
 	if (count _pos == 0) then {_pos = _posOrigin};
 
-	_vehicle=[_pos, _ang + 90,_typeVehX, _sideX] call bis_fnc_spawnvehicle;
+	_vehicle=[_pos, _ang + 90,_typeVehX, _sideX] call A3A_fnc_spawnVehicle;
 	_veh = _vehicle select 0;
 	_vehCrew = _vehicle select 1;
 	_groupVeh = _vehicle select 2;
@@ -138,7 +138,7 @@ else
 		}
 		else
 		{
-			[_veh,_groupX,_posDestination,_mrkOrigin,true] spawn A3A_fnc_airdrop;
+			[_veh,_groupX,_posDestination,_mrkOrigin,true] spawn A3A_fnc_paradrop;
 		};
 	};
 };
