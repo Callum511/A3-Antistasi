@@ -1,23 +1,22 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+private _filename = "fn_onPlayerDisconnect";
 
 params ["_unit", "_id", "_uid"];
 
-Info_3("Player disconnected with id %1 and unit %2 on side %3", _uid, _unit, side _unit);
+[2, format ["Player disconnected with id %1 and unit %2 on side %3", _uid, _unit, (side _unit)], _filename] call A3A_fnc_log;
 
 if (side _unit == sideLogic || {_uid == ""}) exitWith {
-    Error("Exiting onPlayerDisconnect due to no UID or sideLogic unit. Possible Headless Client disconnect?");
+	diag_log "[Antistasi] Exiting onPlayerDisconnect due to no UID or sideLogic unit. Possible Headless Client disconnect?";
 };
 
 
 // find original player unit in case of remote control
 private _realUnit = _unit getVariable ["owner", _unit];
 
-Debug_3("Player unit %1, original unit %2, boss %3", _unit, _realUnit, theBoss);
+[3, format ["Player unit %1, original unit %2, boss %3", _unit, _realUnit, theBoss], _filename] call A3A_fnc_log;
 
 if (_realUnit == theBoss) then
 {
-	if (group petros == group _realUnit) then { [] spawn A3A_fnc_buildHQ };
+	if (group petros == group _realUnit) then { [] spawn A3A_fnc_buildHQ }; 
 
 	// Remove our real unit from boss
 	_realUnit setVariable ["eligible", false, true];
@@ -38,3 +37,4 @@ if (side group _unit == teamPlayer || side group _unit == sideUnknown) then
 // Preventing duping due to weapon loadout saves
 if (alive _realUnit && {!(_realUnit getVariable ["incapacitated", false])} ) then { deleteVehicle _realUnit }
 else { _realUnit setDamage 1 };			// finish off, if incapped
+

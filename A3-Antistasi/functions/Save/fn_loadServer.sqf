@@ -1,12 +1,8 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
-Info("loadServer Starting.");
+diag_log format ["%1: [Antistasi] | INFO | loadServer Starting.",servertime];
 if (isServer) then {
-    Info("Starting Persistent Load.");
+	diag_log format ["%1: [Antistasi] | INFO | Starting Persistent Load.",servertime];
 	petros allowdamage false;
 
-	A3A_saveVersion = 0;
-	["version"] call A3A_fnc_getStatVariable;
 	["savedPlayers"] call A3A_fnc_getStatVariable;
 	["outpostsFIA"] call A3A_fnc_getStatVariable; publicVariable "outpostsFIA";
 	["mrkSDK"] call A3A_fnc_getStatVariable;
@@ -124,7 +120,7 @@ if (isServer) then {
 
 	if (isNil "usesWurzelGarrison") then {
 		//Create the garrison new
-        Info("No WurzelGarrison found, creating new!");
+		diag_log "No WurzelGarrison found, creating new!";
 		[airportsX, "Airport", [0,0,0]] spawn A3A_fnc_createGarrison;	//New system
 		[resourcesX, "Other", [0,0,0]] spawn A3A_fnc_createGarrison;	//New system
 		[factories, "Other", [0,0,0]] spawn A3A_fnc_createGarrison;
@@ -133,7 +129,7 @@ if (isServer) then {
 
 	} else {
 		//Garrison save in wurzelformat, load it
-        Info("WurzelGarrison found, loading it!");
+		diag_log "WurzelGarrison found, loading it!";
 		["wurzelGarrison"] call A3A_fnc_getStatVariable;
 	};
 
@@ -146,8 +142,8 @@ if (isServer) then {
 	clearBackpackCargoGlobal boxX;
 
 	[] remoteExec ["A3A_fnc_statistics",[teamPlayer,civilian]];
-    Info("Persistent Load Completed.");
-    Info("Generating Map Markers.");
+	diag_log format ["%1: [Antistasi] | INFO | Persistent Load Completed.",servertime];
+	diag_log format ["%1: [Antistasi] | INFO | Generating Map Markers.",servertime];
 	["tasks"] call A3A_fnc_getStatVariable;
 	if !(isMultiplayer) then {
 		{//Can't we go around this using the initMarker? And only switching marker?
@@ -211,4 +207,4 @@ if (isServer) then {
 	placementDone = true; publicVariable "placementDone";
 	petros allowdamage true;
 };
-Info("loadServer Completed.");
+diag_log format ["%1: [Antistasi] | INFO | loadServer Completed.",servertime];

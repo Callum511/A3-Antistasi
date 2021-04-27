@@ -1,15 +1,13 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 params ["_marker", "_patrolMarker", "_flag", "_box"];
 
-if(isNil "_marker") exitWith {Error("No marker given!")};
+if(isNil "_marker") exitWith {diag_log "CycleSpawn: No marker given!"};
 
 private ["_side", "_garrison", "_unitX", "_allSoldiers", "_allVehicles", "_allGroups", "_groupX", "_vehicleType", "_crewArray", "_cargoArray", "_skip"];
 
 _side = sidesX getVariable [_marker, sideUnknown];
-if(_side == sideUnknown) exitWith {Error("Marker side resulted in sideUnknown!")};
+if(_side == sideUnknown) exitWith {diag_log "CycleSpawn: Marker side resulted in sideUnknown!"};
 
-Debug("Spawning in now!");
+diag_log "CycleSpawn: Spawning in now!";
 
 _garrison = [_marker] call A3A_fnc_getGarrison;
 _garCount = [_garrison, false] call A3A_fnc_countGarrison;
@@ -153,13 +151,13 @@ if(count _allSoldiers != 0) then
   _sizePerUnit = _patrolSize / (count _allSoldiers);
 };
 
-Debug_3("The size is %1/ Unit count is %2/ Per Unit is %3", _patrolSize, count _allSoldiers, _sizePerUnit);
+diag_log format ["The size is %1/ Unit count is %2/ Per Unit is %3", _patrolSize, count _allSoldiers, _sizePerUnit];
 
 //Every unit can search a area of 12500 m^2, if the unit is bigger, reduce patrol area
 _patrolMarkerSize = getMarkerSize _patrolMarker;
 if(_sizePerUnit > 12500) then
 {
-    Debug("The area is to large, make it smaller");
+  diag_log "The area is to large, make it smaller";
   _patrolMarkerSize set [0, (_patrolMarkerSize select 0) * (12500/_sizePerUnit)];
   _patrolMarkerSize set [1, (_patrolMarkerSize select 1) * (12500/_sizePerUnit)];
 };
@@ -167,7 +165,7 @@ if(_sizePerUnit > 12500) then
 _mainMarkerSize = getMarkerSize _marker;
 if(((_patrolMarkerSize select 0) < (_mainMarkerSize select 0)) || {(_patrolMarkerSize select 1) < (_mainMarkerSize select 1)}) then
 {
-    Debug("Resizing to marker size");
+  diag_log "Resizing to marker size";
   _patrolMarkerSize = _mainMarkerSize;
 };
 _patrolMarker setMarkerSizeLocal _patrolMarkerSize;

@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 params ["_vehPool", "_side", ["_isAir", false]];
 
 /*  Selects a vehicle from the given pool, if available, selects basic vehicle else
@@ -17,12 +15,12 @@ params ["_vehPool", "_side", ["_isAir", false]];
 
 if(isNil "_side") exitWith
 {
-    Error("No side given!");
+  diag_log "SelectAndCreateVehicle: No side given!";
   [objNull, objNull];
 };
 if(isNil "_vehPool" || {!(_vehPool isEqualType []) || {count _vehPool == 0}}) exitWith
 {
-    Error("_vehpool is not a correct variable or empty!");
+  diag_log "SelectAndCreateVehicle: _vehpool is not a correct variable or empty!";
   [objNull, objNull];
 };
 private ["_selectedVehicle"];

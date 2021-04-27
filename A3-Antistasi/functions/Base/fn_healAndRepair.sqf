@@ -20,7 +20,7 @@ boxX setVariable ["lastUsed", _time, true];
 		else {
 			[_x, 0] remoteExec ["setFatigue", _x];
 		};
-		if (A3A_hasACEMedical) then
+		if (hasACEMedical) then
 		{
 			[_x, _x] call ace_medical_treatment_fnc_fullHeal;
 		};

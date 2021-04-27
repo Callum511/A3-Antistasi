@@ -1,9 +1,8 @@
+private _filename = "fn_surrenderAction";
 params ["_unit"];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 
 if !(local _unit) exitWith {
-    Error("Function miscalled with non-local unit");
+	[1, "Function miscalled with non-local unit", _filename] call A3A_fnc_log;
 	[_unit] remoteExec ["A3A_fnc_surrenderAction", _unit];
 };
 
@@ -14,7 +13,7 @@ if (typeOf _unit == "Fin_random_F") exitWith {};		// dogs do not surrender?
 
 if (!alive _unit) exitWith {};							// Used to happen with ACE, seems to be fixed
 if (lifeState _unit == "INCAPACITATED") exitWith {
-    Info("Unit attempted to surrender while incapacitated"); // If not rare, probably a sync bug
+	[2, "Unit attempted to surrender while incapacitated", _filename] call A3A_fnc_log;		// If not rare, probably a sync bug
 	_unit setVariable ["surrendered", false, true];
 };
 

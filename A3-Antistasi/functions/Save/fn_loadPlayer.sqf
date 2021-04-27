@@ -1,18 +1,17 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+private _filename = "fn_loadPlayer";
 if (!isServer) exitWith {
-    Error("Miscalled server-only function");
+	[1, "Miscalled server-only function", _filename] call A3A_fnc_log;
 };
 waitUntil {(!isNil "initVar")};		// hmm...
 
 params ["_playerId", "_unit"];
 
 if !([_playerId] call A3A_fnc_playerHasSave) exitWith {
-    Info_1("No save found for player ID %1", _playerId);
+	[2, format ["No save found for player ID %1", _playerId], _filename] call A3A_fnc_log;
 	[_playerId, _unit] call A3A_fnc_resetPlayer;
 };
 
-Info_2("Loading player data for ID %1 into unit %2", _playerId, _unit);
+[2, format ["Loading player data for ID %1 into unit %2", _playerId, _unit], _filename] call A3A_fnc_log;
 
 private _loadout = [_playerId, "loadoutPlayer"] call A3A_fnc_retrievePlayerStat;
 if (!isNil "_loadout") then { _unit setUnitLoadout _loadout };
@@ -24,7 +23,7 @@ if ([_unit] call A3A_fnc_isMember) then
 {
 	private _saveScore = [_playerId, "scorePlayer"] call A3A_fnc_retrievePlayerStat;
 	if (!isNil "_saveScore" && { _saveScore isEqualType 0 }) then {_score = _saveScore};
-
+	
 	private _saveRank = [_playerId, "rankPlayer"] call A3A_fnc_retrievePlayerStat;
 	if (!isNil "_saveRank" && { _saveRank isEqualType "" }) then {_rank = _saveRank};
 };
@@ -44,4 +43,5 @@ _unit setVariable ["moneyX", _money, true];
 [] remoteExec ["A3A_fnc_statistics", _unit];
 _unit setVariable ["canSave", true, true];
 
-Info_5("Player %1: Score %2, rank %3, money %4, garage count %5", _playerId, _score, _rank, _money, count _garage);
+[2, format ["Player %1: Score %2, rank %3, money %4, garage count %5", _playerId, _score, _rank, _money, count _garage], _filename] call A3A_fnc_log;
+

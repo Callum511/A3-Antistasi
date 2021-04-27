@@ -12,7 +12,7 @@ lootVest = [];
 allArmoredHeadgear = [];
 {allArmoredHeadgear pushBackUnique (getUnitLoadout _x select 6)} forEach NATOSquad;
 */
-if (A3A_hasACE) then {
+if (hasACE) then {
 	lootItem append ["ACE_LIB_LadungPM","ACE_SpareBarrel"];
 };
 

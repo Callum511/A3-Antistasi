@@ -1,12 +1,12 @@
 scriptName "initACEUnconsciousHandler.sqf";
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
-Info("initACEUnconsciousHandler started");
+private _fileName = "initACEUnconsciousHandler.sqf";
+[2,"initACEUnconsciousHandler started",_fileName] call A3A_fnc_log;
 
 ["ace_unconscious", {
 	params["_unit", "_knockout"];
 	private _realSide = side group _unit;		// setUnconscious in ACE often breaks this otherwise
 	if (_knockout) exitWith {
+//		[3, format ["Unit type %1, side %2, realside %3, captive %4, lifestate %5 knocked out", typeof _unit, side _unit, _realSide, str (captive _unit), lifestate _unit], ace_unconscious handler] call A3A_fnc_log;
 		_unit setVariable ["incapacitated", true, true];	// for canFight tests
 
         //Make sure to pass group lead if unit is the leader
@@ -20,6 +20,7 @@ Info("initACEUnconsciousHandler started");
         };
 	};
 
+//	[3, format ["Unit type %1, side %2, realside %3, captive %4, lifestate %5 waking up", typeof _unit, side _unit, _realSide, str (captive _unit), lifestate _unit], ace_unconscious handler] call A3A_fnc_log;
 	_unit setVariable ["incapacitated", false, true];
 
 	if !(_unit getVariable ["ACE_captives_isHandcuffed", false]) then {
@@ -46,10 +47,13 @@ Info("initACEUnconsciousHandler started");
 		};
 	} forEach (_unit nearEntities ["Man", 50]);
 
+//	[3, format ["Nearest unit side = %1", str (side _nearestUnit)], "ace_unconscious handler"] call A3A_fnc_log;
+
 	if (side _nearestUnit == teamPlayer) then {
 		[_unit] remoteExec ["A3A_fnc_surrenderAction", _unit];
 	};
 
 }] call CBA_fnc_addEventHandler;
 
-Info("initACEUnconsciousHandler completed");
+
+[2,"initACEUnconsciousHandler completed",_fileName] call A3A_fnc_log;

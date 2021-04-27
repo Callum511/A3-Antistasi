@@ -1,5 +1,5 @@
 //Attempt to figure out our current ace medical target;
-if (A3A_hasACE) then {
+if (hasACE) then {
 currentAceTarget = objNull;
 	["ace_interactMenuOpened", {
 		//player setVariable ["lastMenuOpened", "INTERACT"];

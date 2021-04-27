@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 params ["_type", "_marker"];
 
 /*  Checks for updates and updates the garrison if needed. SHOULD BE CALLED AFTER EVERY DESPAWN
@@ -19,7 +17,7 @@ _side = sidesX getVariable [_marker, sideUnknown];
 
 if(_side == sideUnknown) exitWith
 {
-    Error("Could not retrieve side!");
+  diag_log "UpdateGarrison: Could not retrieve side!";
 };
 
 for "_i" from 0 to (_garCount - 1) do

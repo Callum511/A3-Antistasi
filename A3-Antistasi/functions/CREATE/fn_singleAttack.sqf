@@ -14,10 +14,11 @@ params ["_markerDestination", "_side", "_super"];
     Returns:
         Nothing
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 
-Info_1("Starting single attack with parameters %1", _this);
+private _filename = "singleAttack";
+
+[2, format ["Starting single attack with parameters %1", _this], _fileName] call A3A_fnc_log;
+
 
 private _markerOrigin = "";
 private _posOrigin = [];
@@ -30,12 +31,12 @@ if(_side isEqualType "") then
     _markerOrigin = _side;
     _posOrigin = getMarkerPos _markerOrigin;
     _side = sidesX getVariable [_markerOrigin, sideUnknown];
-    Info_2("Adapting attack params, side is %1, start base is %2", _side, _markerOrigin);
+    [2, format ["Adapting attack params, side is %1, start base is %2", _side, _markerOrigin], _fileName] call A3A_fnc_log;
 };
 
 if(_side == sideUnknown) exitWith
 {
-    Error_1("Could not retrieve side for %1", _markerOrigin);
+    [1, format ["Could not retrieve side for %1", _markerOrigin], _fileName] call A3A_fnc_log;
 };
 
 private _typeOfAttack = [_posDestination, _side] call A3A_fnc_chooseAttackType;
@@ -50,7 +51,7 @@ if(_markerOrigin == "") then
 
 if (_markerOrigin == "") exitWith
 {
-    Info_1("Small attack to %1 cancelled because no usable bases in vicinity",_markerDestination);
+    [2, format ["Small attack to %1 cancelled because no usable bases in vicinity",_markerDestination], _filename] call A3A_fnc_log
 };
 
 //Base selected, select units now
@@ -75,7 +76,11 @@ else
 };
 _vehicleCount = (round (_vehicleCount)) max 1;
 
-Debug_2("Due to %1 aggression, sending %2 vehicles", (if(_side == Occupants) then {aggressionOccupants} else {aggressionInvaders}), _vehicleCount);
+[
+    3,
+    format ["Due to %1 aggression, sending %2 vehicles", (if(_side == Occupants) then {aggressionOccupants} else {aggressionInvaders}), _vehicleCount],
+    _fileName
+] call A3A_fnc_log;
 
 //Set idle times for marker
 if (_markerOrigin in airportsX) then
@@ -126,7 +131,7 @@ for "_i" from 1 to _vehicleCount do
         sleep 5;
     };
 };
-Info_2("Spawn Performed: Small %1 attack sent with %2 vehicles", _typeOfAttack, count _vehicles);
+[2, format ["Spawn Performed: Small %1 attack sent with %2 vehicles", _typeOfAttack, count _vehicles], _filename] call A3A_fnc_log;
 
 //Prepare despawn conditions
 private _endTime = time + 2700;
@@ -139,11 +144,11 @@ while {true} do
 
     if(_markerSide == _side) exitWith
     {
-        Info_1("Small attack to %1 captured the marker, starting despawn routines", _markerDestination);
+        [2, format ["Small attack to %1 captured the marker, starting despawn routines", _markerDestination], _fileName] call A3A_fnc_log;
     };
 
     //Trying to flip marker
-    Debug("Checking whether small attack took marker");
+    [3, "Checking whether small attack took marker", _fileName] call A3A_fnc_log;
     [_markerDestination, _markerSide] remoteExec ["A3A_fnc_zoneCheck", 2];
 
     private _groupAlive = false;
@@ -157,13 +162,13 @@ while {true} do
 
     if !(_groupAlive) exitWith
     {
-        Info_1("Small attack to %1 has been eliminated, starting despawn routines", _markerDestination);
+        [2, format ["Small attack to %1 has been eliminated, starting despawn routines", _markerDestination], _fileName] call A3A_fnc_log;
     };
 
     sleep 60;
     if(_endTime < time) exitWith
     {
-        Info_1("Small attack to %1 timed out without winning or loosing, starting despawn routines", _markerDestination);
+        [2, format ["Small attack to %1 timed out without winning or loosing, starting despawn routines", _markerDestination], _fileName] call A3A_fnc_log;
     };
 };
 

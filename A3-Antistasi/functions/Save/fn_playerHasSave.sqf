@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 params [["_playerId", ""]];
 
 if (hasInterface) then {
@@ -21,7 +19,7 @@ if (isMultiplayer && !isServer) exitwith {
 private _hasSave =	false;
 
 if (count _playerId == 0) then {
-    Error("Save check given no ID.");
+	diag_log "[Antistasi] Save check given no ID.";
 } else {
 	private _money = [_playerId, "moneyX"] call A3A_fnc_retrievePlayerStat;
 	_hasSave = !(isNil "_money");

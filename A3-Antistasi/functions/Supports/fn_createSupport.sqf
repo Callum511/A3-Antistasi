@@ -16,8 +16,8 @@ params ["_side", "_timerIndex", "_supportType", "_supportTarget", "_precision", 
     Returns:
         Nothing
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "createSupport";
 
 //Selecting the first available name of support type
 private _supportIndex = 0;
@@ -28,7 +28,11 @@ while {(server getVariable [format ["%1_targets", _supportName], -1]) isEqualTyp
     _supportName = format ["%1%2", _supportType, _supportIndex];
 };
 
-Debug_1("New support name will be %1", _supportName);
+[
+    3,
+    format ["New support name will be %1", _supportName],
+    _fileName
+] call A3A_fnc_log;
 
 private _supportMarker = "";
 switch (_supportType) do
@@ -91,7 +95,7 @@ if(_supportMarker isEqualType [] && {(_supportMarker select 0) != ""}) then
 }
 else
 {
-    Info_2("Maybe no spawn, maybe bad value, input %1, return %2", _supportType, _supportMarker);
+    [2, format ["Maybe no spawn, maybe bad value, input %1, return %2", _supportType, _supportMarker], _fileName] call A3A_fnc_log;
 };
 
 supportCallInProgress = false;

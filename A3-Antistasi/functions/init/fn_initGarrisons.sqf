@@ -1,9 +1,8 @@
 //Original Author: Barbolani
 //Edited and updated by the Antistasi Community Development Team
 scriptName "fn_initGarrisons";
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
-Info("InitGarrisons started");
+private _fileName = "fn_initGarrisons";
+[2,"InitGarrisons started",_fileName] call A3A_fnc_log;
 
 _fnc_initMarker =
 {
@@ -98,7 +97,7 @@ private _controlsCSAT = [];
 
 if (debug) then
 {
-    Debug_1("Setting Control Marks for Worldname: %1", worldName);
+	diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | Setting Control Marks for Worldname: %2  .", servertime, worldName];
 };
 
 if (gameMode == 1) then
@@ -160,8 +159,8 @@ if (gameMode == 1) then
 	_mrkNATO = markersX - _mrkCSAT - ["Synd_HQ"];
 
 	if (debug) then {
-        Debug_1("_mrkCSAT: %1", _mrkCSAT);
-        Debug_1("_mrkNATO: %1", _mrkNATO);
+		diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | _mrkCSAT: %2.", servertime, _mrkCSAT];
+		diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | _mrkNATO: %2.", servertime, _mrkNATO];
 	};
 }
 else
@@ -194,35 +193,35 @@ if (isServer) then {"NATO_carrier" setMarkertype flagNATOmrk};
 if (isServer) then {"CSAT_carrier" setMarkertype flagCSATmrk};
 
 if (debug) then {
-    Debug("Setting up Airbase stuff.");
+	diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | Setting up Airbase stuff.", servertime];
 };
 
 [airportsX, "Airport"] call _fnc_initGarrison;								//Old system
 [airportsX, "Airport", [0,0,0]] call A3A_fnc_createGarrison;	//New system
 
 if (debug) then {
-    Debug("Setting up Resource stuff.");
+	diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | Setting up Resource stuff.", servertime];
 };
 
 [resourcesX, "Resource"] call _fnc_initGarrison;							//Old system
 [resourcesX, "Other", [0,0,0]] call A3A_fnc_createGarrison;	//New system
 
 if (debug) then {
-    Debug("Setting up Factory stuff.");
+	diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | Setting up Factory stuff.", servertime];
 };
 
 [factories, "Factory"] call _fnc_initGarrison;
 [factories, "Other", [0,0,0]] call A3A_fnc_createGarrison;
 
 if (debug) then {
-    Debug("Setting up Outpost stuff.");
+	diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | Setting up Outpost stuff.", servertime];
 };
 
 [outposts, "Outpost"] call _fnc_initGarrison;
 [outposts, "Outpost", [1,1,0]] call A3A_fnc_createGarrison;
 
 if (debug) then {
-    Debug("Setting up Seaport stuff.");
+	diag_log format ["%1: [Antistasi] | DEBUG | initGarrisons.sqf | Setting up Seaport stuff.", servertime];
 };
 
 [seaports, "Seaport"] call _fnc_initGarrison;
@@ -231,4 +230,4 @@ if (debug) then {
 //New system, adding cities
 [citiesX, "City", [0,0,0]] call A3A_fnc_createGarrison;
 
-Info("InitGarrisons completed");
+[2,"InitGarrisons completed",_fileName] call A3A_fnc_log;

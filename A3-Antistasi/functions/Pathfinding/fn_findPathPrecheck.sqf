@@ -26,30 +26,30 @@ params
     ["_startNav", 0, [0]],
     ["_endNav", 0, [0]]
 ];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "fn_findPathPrecheck";
 if(_startNav == -1) exitWith
 {
-    Error("No navnode found to start pathfinding at");
+    [1, "No navnode found to start pathfinding at", _fileName] call A3A_fnc_log;
     false;
 };
 
 if(_endNav == -1) exitWith
 {
-    Error("No navnode found to end pathfinding at");
+    [1, "No navnode found to end pathfinding at", _fileName] call A3A_fnc_log;
     false;
 };
 
 if(_startNav == _endNav) exitWith
 {
-    Error("Same nodes given, cannot plot between them");
+    [1, "Same nodes given, cannot plot between them", _fileName] call A3A_fnc_log;
     false;
 };
 
 private _nodesConnected = [_startNav, _endNav] call A3A_fnc_areNodesConnected;
 if(!_nodesConnected) exitWith
 {
-    Info("The given nodes were not connected, cannot create path");
+    [2, "The given nodes were not connected, cannot create path", _fileName] call A3A_fnc_log;
     false;
 };
 

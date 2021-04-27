@@ -15,13 +15,13 @@ params ["_side", "_timerIndex", "_supportPos", "_supportName"];
     Returns:
         The name of the target marker, empty string if not created
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "SUP_airstrike";
 private _airport = [_supportPos, _side] call A3A_fnc_findAirportForAirstrike;
 
 if(_airport == "") exitWith
 {
-    Info_1("No airport found for %1 support", _supportName);
+    [2, format ["No airport found for %1 support", _supportName], _fileName] call A3A_fnc_log;
     ["", 0, 0];
 };
 
@@ -48,7 +48,7 @@ private _enemies = allUnits select
 
 if(isNil "napalmEnabled") then
 {
-    Error("napalmEnabled does not containes a value, assuming false");
+    [1, "napalmEnabled does not containes a value, assuming false", _fileName] call A3A_fnc_log;
     napalmEnabled = false;
 };
 
@@ -68,7 +68,7 @@ private _bombType = if (napalmEnabled) then {"NAPALM"} else {"CLUSTER"};
     if (_bombType == "HE") exitWith {};
 } forEach _enemies;
 
-Info_1("Airstrike will be carried out with bombType %1", _bombType);
+[2, format ["Airstrike will be carried out with bombType %1", _bombType], _fileName] call A3A_fnc_log;
 
 private _setupTime = 1200 - ((tierWar - 1) * 110);
 private _minSleepTime = (1 - (tierWar - 1) * 0.1) * _setupTime;

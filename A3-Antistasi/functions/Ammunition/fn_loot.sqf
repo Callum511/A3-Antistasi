@@ -17,6 +17,8 @@ lootItem append allUAVTerminals + allMineDetectors + allGPS + allRadios + allLas
 //    Weapons    ///
 ////////////////////
 lootWeapon append allRifles + allSniperRifles + allHandguns + allMachineGuns + allMissileLaunchers + allRocketLaunchers + allSMGs + allShotguns;
+lootWeapon deleteAt (LootWeapon find "hlc_pistol_DL44");
+
 
 /////////////////////////////
 //   Weapon Attachments   ///
@@ -32,6 +34,8 @@ lootGrenade append allGrenades + allMagShell + allIRGrenades + allMagSmokeShell 
 //   Magazines   ///
 ////////////////////
 lootMagazine append allMagBullet + allMagShotgun + allMagMissile + allMagRocket + lootGrenade;
+lootMagazine deleteAt (lootMagazine find "hlc_500rnd_762x51_Cinematic");
+lootMagazine deleteAt (lootMagazine find "hlc_10Rnd_BLASTER_B_DL44");
 
 ///////////////////
 //  Explosives  ///

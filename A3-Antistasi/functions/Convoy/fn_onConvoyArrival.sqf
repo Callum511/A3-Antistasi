@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 params ["_convoyID", "_startPos", "_endPos", "_units", "_sideConvoy", "_convoyType"];
 
 server setVariable [format ["Con%1", _convoyID], nil, true];
@@ -36,7 +34,7 @@ switch (_convoyType) do
     }
     else
     {
-        Error("no marker at convoy destination!");
+      diag_log "Error, no marker at convoy destination!";
     };
   };
   case ("return"):

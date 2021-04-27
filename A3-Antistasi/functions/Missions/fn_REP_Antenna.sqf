@@ -14,10 +14,9 @@ _displayTime = [_dateLimit] call A3A_fnc_dateToTimeString;//Converts the time po
 
 _nameDest = [_markerX] call A3A_fnc_localizar;
 
-private _taskId = "REP" + str A3A_taskCount;
 [
 	[teamPlayer, civilian],
-	_taskId,
+	"REP",
 	[
 		format ["%3 is rebuilding a radio tower in %1. If we want to keep up the enemy comms breakdown, the work must be stopped. Destroy the repair truck parked nearby or capture the zone. Work will be finished on %2.",_nameDest,_displayTime,nameOccupants],
 		"Tower Rebuild Disrupt",
@@ -26,7 +25,7 @@ private _taskId = "REP" + str A3A_taskCount;
 	getPos _antennaDead,
 	false, 0, true, "Destroy", true
 ] call BIS_fnc_taskCreate;
-[_taskId, "REP", "CREATED"] remoteExecCall ["A3A_fnc_taskUpdate", 2];
+missionsX pushBack ["REP","CREATED"]; publicVariable "missionsX";
 _truckCreated = false;
 
 waitUntil {sleep 1;(dateToNumber date > _dateLimitNum) or (spawner getVariable _markerX != 2)};
@@ -58,9 +57,16 @@ if (spawner getVariable _markerX != 2) then
 
 	if (not alive _veh) then
 		{
-		[_taskId, "REP", "SUCCEEDED"] call A3A_fnc_taskSetState;
-        [Occupants, 15, 90] remoteExec ["A3A_fnc_addAggression", 2];
-        [Invaders, 5, 60] remoteExec ["A3A_fnc_addAggression", 2];
+		[
+			"REP",
+			[
+				format ["%3 is rebuilding a radio tower in %1. If we want to keep up the enemy comms breakdown, the work must be stopped. Destroy the repair truck parked nearby or capture the zone. Work will be finished on %2.", _nameDest, _displayTime, nameOccupants],
+				"Tower Rebuild Disrupt",
+				_markerX
+			],
+			getPos _antennaDead, "SUCCEEDED", "Destroy"
+		] call A3A_fnc_taskUpdate;
+		[[15, 90], [5, 60]] remoteExec ["A3A_fnc_prestige",2];
 		[1200, Occupants] remoteExec ["A3A_fnc_timingCA",2];
 		{if (_x distance _veh < 500) then {[10,_x] call A3A_fnc_playerScoreAdd}} forEach (allPlayers - (entities "HeadlessClient_F"));
 		[5,theBoss] call A3A_fnc_playerScoreAdd;
@@ -70,16 +76,31 @@ if (dateToNumber date > _dateLimitNum) then
 	{
 	if (sidesX getVariable [_markerX,sideUnknown] == teamPlayer) then
 		{
-		[_taskId, "REP", "SUCCEEDED"] call A3A_fnc_taskSetState;
-        [Occupants, 15, 90] remoteExec ["A3A_fnc_addAggression", 2];
-        [Invaders, 5, 60] remoteExec ["A3A_fnc_addAggression", 2];
+		[
+			"REP",
+			[
+				format ["%3 is rebuilding a radio tower in %1. If we want to keep up the enemy comms breakdown, the work must be stopped. Destroy the repair truck parked nearby or capture the zone. Work will be finished on %2:%3.",_nameDest,_displayTime,nameOccupants],
+				"Tower Rebuild Disrupt",
+				_markerX
+			],
+			getPos _antennaDead, "SUCCEEDED", "Destroy"
+		] call A3A_fnc_taskUpdate;
+		[[15, 90], [5, 60]] remoteExec ["A3A_fnc_prestige",2];
 		[1200, Occupants] remoteExec ["A3A_fnc_timingCA",2];
 		{if (_x distance _veh < 500) then {[10,_x] call A3A_fnc_playerScoreAdd}} forEach (allPlayers - (entities "HeadlessClient_F"));
 		[5,theBoss] call A3A_fnc_playerScoreAdd;
 		}
 	else
 		{
-		[_taskId, "REP", "FAILED"] call A3A_fnc_taskSetState;
+		[
+			"REP",
+			[
+				format ["%3 is rebuilding a radio tower in %1. If we want to keep up the enemy comms breakdown, the work must be stopped. Destroy the repair truck parked nearby or capture the zone. Work will be finished on %2.",_nameDest,_displayTime,nameOccupants],
+				"Tower Rebuild Disrupt",
+				_markerX
+			],
+			getPos _antennaDead, "FAILED", "Destroy"
+		] call A3A_fnc_taskUpdate;
 		//[5,0,_positionX] remoteExec ["A3A_fnc_citySupportChange",2];
 		[-600, Occupants] remoteExec ["A3A_fnc_timingCA",2];
 		[-10,theBoss] call A3A_fnc_playerScoreAdd;
@@ -87,7 +108,7 @@ if (dateToNumber date > _dateLimitNum) then
 	[_antennaDead] remoteExec ["A3A_fnc_rebuildRadioTower", 2];
 	};
 
-[_taskId, "REP", 30] spawn A3A_fnc_taskDelete;
+_nul = [30,"REP"] spawn A3A_fnc_deleteTask;
 
 waitUntil {sleep 1; (spawner getVariable _markerX == 2)};
 

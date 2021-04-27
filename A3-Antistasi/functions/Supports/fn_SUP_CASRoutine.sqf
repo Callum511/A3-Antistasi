@@ -1,6 +1,6 @@
 params ["_side", "_sleepTime", "_timerIndex", "_airport", "_supportName", "_setupPos"];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "SUP_CASRoutine";
 
 private _plane = if (_side == Occupants) then {vehNATOPlane} else {vehCSATPlane};
 private _crewUnits = if(_side == Occupants) then {NATOPilot} else {CSATPilot};
@@ -317,7 +317,7 @@ while {_timeAlive > 0} do
                 //New target active, read in
                 private _targetEntry = _targetList deleteAt 0;
                 server setVariable [format ["%1_targets", _supportName], _targetList, true];
-                Debug_2("Next target for %2 is %1", _targetEntry, _supportName);
+                [3, format ["Next target for %2 is %1", _targetEntry, _supportName], _fileName] call A3A_fnc_log;
 
                 //Parse targets
                 private _targetParams = _targetEntry select 0;
@@ -435,7 +435,7 @@ while {_timeAlive > 0} do
                 }
                 else
                 {
-                    Debug_1("%1 skips target, as it is already dead", _supportName);
+                    [3, format ["%1 skips target, as it is already dead", _supportName], _fileName] call A3A_fnc_log;
                 };
             };
         }
@@ -445,18 +445,18 @@ while {_timeAlive > 0} do
             {
                 if !(_isRepathing) then
                 {
-                    Debug_1("%1 needs to repath, calculating attack path", _supportName);
+                    [3, format ["%1 needs to repath, calculating attack path", _supportName], _fileName] call A3A_fnc_log;
                     //Plane needs a new approach vector, calculate new
                     private _strikePlaneVector = (getPos _targetObj) vectorDiff (getPos _strikePlane);
                     _strikePlaneVector set [2, 0];
                     private _sidePath = _strikePlaneVector vectorCrossProduct [0,0,-1];
                     _repathVector = vectorNormalized _sidePath;
                     _repathVector = _repathVector vectorMultiply 2500;
-                    Debug_1("Repath vector is %1", str _repathVector);
+                    [3, format ["Repath vector is %1", str _repathVector], _fileName] call A3A_fnc_log;
 
                     private _repathPos = (getPos _targetObj) vectorAdd _repathVector;
                     _repathPos set [2, 500];
-                    Debug_2("Repath pos %1, object pos %2", str _repathPos, str (getPos _targetObj));
+                    [3, format ["Repath pos %1, object pos %2", str _repathPos, str (getPos _targetObj)], _fileName] call A3A_fnc_log;
                     private _repathWP = _strikeGroup addWaypoint [_repathPos, 0];
                     _repathWP setWaypointType "MOVE";
                     _repathWP setWaypointSpeed "FULL";
@@ -472,7 +472,7 @@ while {_timeAlive > 0} do
                     {
                         _isRepathing = false;
                         _strikePlane setVariable ["needsRecalculation", false];
-                        Debug_1("%1 repathing waypoint reached, attacking", _supportName);
+                        [3, format ["%1 repathing waypoint reached, attacking", _supportName], _fileName] call A3A_fnc_log;
                     };
                 };
             }
@@ -494,7 +494,7 @@ while {_timeAlive > 0} do
                     if (terrainIntersect [_targetPos, _enterRunPos]) then
                     {
                         //Something is in the way, repathing
-                        Debug_1("After recalculation %1 way is no longer clear, repath", _supportName);
+                        [3, format ["After recalculation %1 way is no longer clear, repath", _supportName], _fileName] call A3A_fnc_log;
                         _strikePlane setVariable ["needsRecalculation", true];
                         _isRepathing = false;
                         _sleepTime = 5;
@@ -561,28 +561,35 @@ while {_timeAlive > 0} do
         {({alive _x} count (units _strikeGroup)) == 0}
     ) exitWith
     {
-        Info_1("%1 has been destroyed or crew killed, aborting routine", _supportName);
-        [_side, 20, 45] remoteExec ["A3A_fnc_addAggression", 2];
+        [2,format ["%1 has been destroyed or crew killed, aborting routine", _supportName],_fileName] call A3A_fnc_log;
+        if(_side == Occupants) then
+        {
+            [[10, 45], [0, 0]] remoteExec ["A3A_fnc_prestige", 2];
+        }
+        else
+        {
+            [[0, 0], [10, 45]] remoteExec ["A3A_fnc_prestige", 2];
+        };
     };
 
     //No missiles left
     if (_confirmedKills <= 0) exitWith
     {
-        Info_1("%1 has reached its kill limit, aborting routine", _supportName);
+        [2,format ["%1 has reached its kill limit, aborting routine", _supportName],_fileName] call A3A_fnc_log;
         _timeAlive = 0;
     };
 
     //Retreating
     if(_strikePlane getVariable ["Retreat", false]) exitWith
     {
-        Info_1("%1 met heavy resistance, retreating", _supportName);
+        [2,format ["%1 met heavy resistance, retreating", _supportName], _fileName] call A3A_fnc_log;
         _timeAlive = 0;
     };
 
     //No ammo left
     if(_strikePlane getVariable ["OutOfAmmo", false]) exitWith
     {
-        Info_1("%1 run out of ammo, returning to base", _supportName);
+        [2, format ["%1 run out of ammo, returning to base", _supportName], _fileName] call A3A_fnc_log;
         _timeAlive = 0;
     };
 
@@ -605,7 +612,7 @@ if (alive _strikePlane && [driver _strikePlane] call A3A_fnc_canFight) then
     _wpBase setWaypointType "MOVE";
     _wpBase setWaypointBehaviour "CARELESS";
     _wpBase setWaypointSpeed "FULL";
-    _wpBase setWaypointStatements ["true", "if !(local this) exitWith {}; deleteVehicle (vehicle this); {deleteVehicle _x} forEach thisList"];
+    _wpBase setWaypointStatements ["", "deleteVehicle (vehicle this); {deleteVehicle _x} forEach thisList"];
     _strikeGroup setCurrentWaypoint _wpBase;
 
     waitUntil {sleep 0.5;_strikePlane distance2D (getMarkerPos _airport) < 100};

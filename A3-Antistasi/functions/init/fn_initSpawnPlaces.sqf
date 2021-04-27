@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 #define SPACING     1
 
 params ["_marker", "_placementMarker"];
@@ -34,7 +32,7 @@ _mainMarker = getMarkerPos _marker;
   _fullName = format ["%1%2", _markerPrefix, _x];
   if(debug && {_mainMarker distance (getMarkerPos _fullName) > 500}) then
   {
-    Error_2("Placementmarker %1 is more than 500 meter away from its mainMarker %2. You may want to check that!", _fullName, _marker);
+    diag_log format ["Placementmarker %1 is more than 500 meter away from its mainMarker %2. You may want to check that!", _fullName, _marker];
   };
   switch (_first) do
   {
@@ -48,7 +46,7 @@ _mainMarker = getMarkerPos _marker;
 
 if(count _vehicleMarker == 0) then
 {
-  Error_1("InitSpawnPlaces: Could not find any vehicle places on %1!", _marker);
+  diag_log format ["InitSpawnPlaces: Could not find any vehicle places on %1!", _marker];
 };
 
 private ["_markerSize", "_distance", "_buildings", "_hangars", "_helipads", "_markerX"];
@@ -113,13 +111,13 @@ _vehicleSpawns = [];
     _width = (_size select 1) * 2;
     if(_width < (4 + 2 * SPACING)) then
     {
-      Error_2("InitSpawnPlaces: Marker %1 is not wide enough for vehicles, required are %2 meters!", _x , (4 + 2 * SPACING));
+      diag_log format ["InitSpawnPlaces: Marker %1 is not wide enough for vehicles, required are %2 meters!", _x , (4 + 2 * SPACING)];
     }
     else
     {
       if(_length < 10) then
       {
-        Error_1("InitSpawnPlaces: Marker %1 is not long enough for vehicles, required are 10 meters!", _x);
+          diag_log format ["InitSpawnPlaces: Marker %1 is not long enough for vehicles, required are 10 meters!", _x];
       }
       else
       {
@@ -202,7 +200,7 @@ _mortarSpawns = [];
 
 _spawns = [_vehicleSpawns, _heliSpawns, _planeSpawns, _mortarSpawns];
 
-//Debug_2("%1 set to %2", _marker, _spawns);
+//diag_log format ["%1 set to %2", _marker, _spawns];
 
 //Saving the spawn places
 spawner setVariable [format ["%1_spawns", _marker], _spawns, true];

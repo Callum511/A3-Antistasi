@@ -14,8 +14,8 @@ params ["_posDestination", "_side", ["_supportName", "Small attack"]];
     Returns:
         _typeOfAttack: STRING : The type of the attack, "" if no attack should happen
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "chooseAttackType";
 
 //Check if unit count isnt reached
 //There might be an exploit here with spawning alot of rebel units to prevent qrfs from happening
@@ -30,14 +30,14 @@ if (gameMode <3) then
 };
 if ((_allAIUnits + 4 > maxUnits) || (_allUnitsSide + 4 > _maxUnitsSide)) exitWith
 {
-    Info_2("%1 to %2 cancelled because maximum unit count reached", _supportName, _posDestination);
+    [2, format ["%1 to %2 cancelled because maximum unit count reached", _supportName, _posDestination], _filename] call A3A_fnc_log;
     ""
 };
 
 //If too foggy for anything abort here
 if ([_posDestination,false] call A3A_fnc_fogCheck < 0.3) exitWith
 {
-    Info_2("%1 to %1 cancelled due to heavy fog", _supportName, _posDestination);
+    [2, format ["%1 to %1 cancelled due to heavy fog", _supportName, _posDestination], _filename] call A3A_fnc_log;
     ""
 };
 

@@ -13,8 +13,7 @@ params ["_supportType", "_side", "_position"];
     Returns:
         -1 if not available, the index of the timer otherwise
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+private _fileName = "supportAvailable";
 private _timerIndex = -1;
 private _arrays = [];
 
@@ -95,11 +94,11 @@ switch (_supportType) do
     default
     {
         //If unknown, set not available
-        Debug_1("Unknown support %1, returning -1", _supportType);
+        [3, format ["Unknown support %1, returning -1", _supportType], _fileName] call A3A_fnc_log;
         _timerIndex = -1;
     };
 };
 
-Debug_3("Support check for %1 returns %2, array is %3", _supportType, _timerIndex, _arrays);
+[3, format ["Support check for %1 returns %2, array is %3", _supportType, _timerIndex, _arrays], _fileName] call A3A_fnc_log;
 
 _timerIndex;

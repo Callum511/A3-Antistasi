@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 if (!isServer and hasInterface) exitWith {false};
 private ["_markerX","_base","_posbase","_posMarker","_angOrig","_ang","_attempts","_distanceX","_pos","_failure","_mineX"];
 
@@ -7,7 +5,7 @@ _markerX = _this select 0;
 
 _base = _this select 1;
 
-Debug_1("Creating AAF Minefield at %1", _markerX);
+diag_log format ["[Antistasi] Creating AAF Minefield at %1 (wavedCA.sqf)", _markerX];
 
 if (spawner getVariable _base != 2) exitWith {false};
 _posbase = getMarkerPos _base;

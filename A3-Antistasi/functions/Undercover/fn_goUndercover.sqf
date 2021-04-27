@@ -115,7 +115,7 @@ do {
 								};
 							};
 						};
-						if (A3A_hasACE) then {
+						if (hasACE) then {
 							if (((position _player nearObjects["DemoCharge_Remote_Ammo", 5]) select 0) mineDetectedBy Occupants) then {
 								_changeX = "SpotBombTruck";
 							};

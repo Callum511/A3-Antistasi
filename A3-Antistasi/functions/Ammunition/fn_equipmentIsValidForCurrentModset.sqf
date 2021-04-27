@@ -52,6 +52,15 @@ if (_itemIsVanilla && {A3A_hasRHS}) then {
 	};
 };
 
+//Remove vanilla weapons if NIA loaded
+if (_itemIsVanilla && {A3A_hasNIA}) then {
+	switch (_categories select 0) do {
+		case "Weapon": {
+			_remove = true;
+		};
+	};
+};
+
 //IFA is stricter, remove all modern day stuff unless necessary (some ACE items)
 //Avoid listing all of the mods here.
 if (A3A_hasIFA && !_remove && {(_itemIsVanilla || _itemMod == "@ace" || _itemMod ==	"@task_force_radio")}) then {

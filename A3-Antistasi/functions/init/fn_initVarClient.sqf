@@ -1,10 +1,9 @@
-/**
+/** 
  * This file is called AFTER initVarServer.sqf, on both the client and server.
  */
 scriptName "initVarClient.sqf";
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
-Info("initVarClient started");
+private _fileName = "initVarClient.sqf";
+[2,"initVarClient started",_fileName] call A3A_fnc_log;
 
 //Is music enabled
 musicON = false;
@@ -13,11 +12,11 @@ musicON = false;
 savingClient = false;
 
 //Prevents units being recruited too soon after being dismissed.
-recruitCooldown = 0;
+recruitCooldown = 0;	
 
 incomeRep = false;
 
 //Should AI automatically heal teammates. Each client has their own copy of this.
-autoHeal = false;
+autoHeal = false;	
 
-Info("initVarClient completed");
+[2,"initVarClient completed",_fileName] call A3A_fnc_log;

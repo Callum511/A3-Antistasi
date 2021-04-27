@@ -1,7 +1,6 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+private _filename = "fn_garbageCleaner.sqf";
 [petros,"hint","Deleting Garbage. Please wait", "Garbage Cleaner"] remoteExec ["A3A_fnc_commsMP", 0];
-Info("Cleaning garbage...");
+[2, "Cleaning garbage...", _filename] call A3A_fnc_log;
 
 private _rebelSpawners = allUnits select { side group _x == teamPlayer && {_x getVariable ["spawner",false]} };
 
@@ -20,7 +19,7 @@ private _fnc_distCheck = {
 { deleteVehicle _x } forEach (allMissionObjects "Leaflet_05_F");				// Drone drop leaflets
 { deleteVehicle _x } forEach (allMissionObjects "Ejection_Seat_Base_F");		// All vanilla ejection seats
 
-if (A3A_hasACE) then {
+if (hasACE) then {
 	{ deleteVehicle _x } forEach (allMissionObjects "ACE_bodyBagObject");
 	{ deleteVehicle _x } forEach (allMissionObjects "UserTexture1m_F");						// ACE spraycan tags
 	{ deleteVehicle _x } forEach (allMissionObjects "ace_cookoff_Turret_MBT_01");			//MBT turret wrecks
@@ -50,4 +49,4 @@ if (A3A_hasRHS) then {
 };
 
 [petros,"hint","Garbage deleted", "Garbage Cleaner"] remoteExec ["A3A_fnc_commsMP", 0];
-Info("Garbage clean completed");
+[2, "Garbage clean completed", _filename] call A3A_fnc_log;

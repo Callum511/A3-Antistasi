@@ -13,8 +13,8 @@ params ["_side", "_posDestination", "_supportName"];
     Returns:
         _coverageMarker : STRING : The name of the marker covering the support area, "" if not possible
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _filename = "SUP_QRF";
 
 private _typeOfAttack = [_posDestination, _side, _supportName] call A3A_fnc_chooseAttackType;
 //If no type specified, exit here
@@ -26,12 +26,16 @@ if(_typeOfAttack == "") exitWith
 private _markerOrigin = [_posDestination, _side] call A3A_fnc_findBaseForQRF;
 if (_markerOrigin == "") exitWith
 {
-    Info_1("QRF to %1 cancelled because no usable bases in vicinity",_posDestination);
+    [2, format ["QRF to %1 cancelled because no usable bases in vicinity",_posDestination], _filename] call A3A_fnc_log;
     ""
 };
 private _posOrigin = getMarkerPos _markerOrigin;
 
-Debug_2("%1 will be send from %2", _supportName, _markerOrigin);
+[
+    3,
+    format ["%1 will be send from %2", _supportName, _markerOrigin],
+    _fileName
+] call A3A_fnc_log;
 
 private _targetMarker = createMarker [format ["%1_coverage", _supportName], _posDestination];
 
@@ -64,7 +68,11 @@ else
 };
 _vehicleCount = (round (_vehicleCount)) max 1;
 
-Debug_2("Due to %1 aggression, sending %2 vehicles", (if(_side == Occupants) then {aggressionOccupants} else {aggressionInvaders}), _vehicleCount);
+[
+    3,
+    format ["Due to %1 aggression, sending %2 vehicles", (if(_side == Occupants) then {aggressionOccupants} else {aggressionInvaders}), _vehicleCount],
+    _fileName
+] call A3A_fnc_log;
 
 //Set idle times for marker
 if (_markerOrigin in airportsX) then
@@ -115,7 +123,7 @@ for "_i" from 1 to _vehicleCount do
     };
 
 };
-Info_3("Spawn Performed: %1 QRF sent with %2 vehicles, callsign %3", _typeOfAttack, count _vehicles, _supportName);
+[2, format ["Spawn Performed: %1 QRF sent with %2 vehicles, callsign %3", _typeOfAttack, count _vehicles, _supportName], _filename] call A3A_fnc_log;
 
 [_side, _vehicles, _groups, _posDestination, _supportName] spawn A3A_fnc_SUP_QRFRoutine;
 

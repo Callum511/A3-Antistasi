@@ -13,7 +13,7 @@
 
 private _items = [];
 
-if (A3A_hasACE) then {
+if (hasACE) then {
 	_items append [
 		["ACE_EarPlugs", 1],
 		["ACE_MapTools", 1],

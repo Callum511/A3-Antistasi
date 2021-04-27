@@ -1,6 +1,5 @@
 scriptName "fn_initDisabledMods.sqf";
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+private _fileName = "fn_initDisabledMods.sqf";
 private _disabledMods = [];
 
 if (!allowDLCKart) then {_disabledMods pushBack "kart"};
@@ -15,6 +14,6 @@ if (!allowDLCEnoch) then {_disabledMods pushBack "enoch"};
 if (!allowDLCOfficialMod) then {_disabledMods pushBack "officialmod"};
 if (!allowDLCAoW) then {_disabledMods pushBack "aow"};
 
-Info_1("Disabled DLC: %1",_disabledMods);
+[2,format ["Disabled DLC: %1",_disabledMods],_fileName] call A3A_fnc_log;
 
 _disabledMods;

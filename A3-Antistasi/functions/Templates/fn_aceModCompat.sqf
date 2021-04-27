@@ -1,9 +1,7 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 ////////////////////////////////////
 //      ACE ITEMS LIST           ///
 ////////////////////////////////////
-Info("Creating ACE Items List");
+diag_log format ["%1: [Antistasi] | INFO | initVar | Creating ACE Items List",servertime];
 aceItems = [
 	"ACE_EarPlugs",
 	"ACE_RangeCard",
@@ -64,7 +62,7 @@ initialRebelEquipment append aceItems;
 
 
 //ACE medical starting items
-if (A3A_hasACEMedical) then {
+if (hasACEMedical) then {
 	initialRebelEquipment append aceMedItems;
 };
 

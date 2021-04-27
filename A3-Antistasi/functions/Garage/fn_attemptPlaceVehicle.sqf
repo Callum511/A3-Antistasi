@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 #include "defineGarage.inc"
 
 //vehPlace_lastPreviewPosition = nil;
@@ -10,7 +8,7 @@ deleteVehicle vehPlace_previewVeh;
 
 private _isValidLocationArray = [vehPlace_callbackTarget, CALLBACK_VEH_IS_VALID_LOCATION, [_pos, _dir, _vehicleType]] call A3A_fnc_vehPlacementCallbacks;
 if (isNil "_isValidLocationArray") then {
-	Error_1("No Is Valid Location Callback registered for %1", vehPlace_callbackTarget);
+	diag_log format ["[Antistasi] No Is Valid Location Callback registered for %1", vehPlace_callbackTarget];
 	_isValidLocationArray = [true];
 };
 
@@ -23,7 +21,7 @@ if (!(_isValidLocationArray select 0))	exitWith {
 
 private _canPlaceArray = [vehPlace_callbackTarget, CALLBACK_CAN_PLACE_VEH , [_pos, _dir, _vehicleType]] call A3A_fnc_vehPlacementCallbacks;
 if (isNil "_canPlaceArray") then {
-	Error_1("No Can Place Vehicle Callback registered for %1", vehPlace_callbackTarget);
+	diag_log format ["[Antistasi] No Can Place Vehicle Callback registered for %1", vehPlace_callbackTarget];
 	_canPlaceArray = [true];
 };
 

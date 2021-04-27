@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 private ["_allMarker", "_placementMarker", "_split", "_start", "_data"];
 
 _allMarker = allMapMarkers;
@@ -95,12 +93,12 @@ fnc_sortPlacementMarker =
 
     default
     {
-        Error_1("Could not resolve marker %1", _x);
+      diag_log format ["ERROR: Could not resolve marker %1", _x];
     };
   };
 } forEach _allMarker;
 
-//Debug("Marker setup done, placement marker are");
+//diag_log "Marker setup done, placement marker are";
 //[_placementMarker, "Placements"] call A3A_fnc_logArray;
 
 {

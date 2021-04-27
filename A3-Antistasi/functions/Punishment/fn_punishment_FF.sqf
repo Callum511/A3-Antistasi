@@ -43,8 +43,7 @@ params [
     ["_victim",objNull, [objNull]],
     ["_customMessage","", [""], [] ]
 ];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+private _filename = "fn_punishment_FF";
 ///////////Checks if is Collision///////////
 private _isCollision = false;
 if (_instigator isEqualType []) then {
@@ -62,8 +61,7 @@ if (_victim isKindOf "Man") then {
     _victimCoordsStats = [" damaged ",name _victim," [",["AI",getPlayerUID _victim] select (isPlayer _victim),"] (grid: ",mapGridPosition _victim,"; ",(_victim distance2D posHQ) toFixed 0,"m from HQ; ",(_instigator distance2D _victim) toFixed 0,"m from Instigator)"] joinString "";
 };
 private _instigatorCoordsStats = [name _instigator," [",getPlayerUID _instigator,"] (grid: ",mapGridPosition _instigator,"; ",(_instigator distance2D posHQ) toFixed 0,"m from HQ; customMessage:'",_customMessage,"')"] joinString "";
-private _dmgLog = ["DAMAGE | ", _instigatorCoordsStats, _victimCoordsStats] joinString "";
-Info(_dmgLog);
+[2, ["DAMAGE | ", _instigatorCoordsStats, _victimCoordsStats] joinString "", _filename] call A3A_fnc_log;
 
 //////Cool down prevents multi-hit spam/////
     // Doesn't log to avoid RPT spam.
@@ -85,12 +83,12 @@ private _notifyInstigator = {
 private _logPvPHurt = {
     if (!(_victim isKindOf "Man")) exitWith {};
     private _killStats = format ["PVPHURT | Rebel %1 [%2]%3", name _instigator, getPlayerUID _instigator, _victimStats];
-    ServerInfo(_killStats);
+    [2,_killStats,_filename,true] call A3A_fnc_log;
 };
 private _logPvPAttack = {
     if (!(_victim isKindOf "Man")) exitWith {};
     private _killStats = format ["PVPATTACK | PvP %1 [%2]%3", name _instigator, getPlayerUID _instigator, _victimStats];
-    ServerInfo(_killStats);
+    [2,_killStats,_filename,true] call A3A_fnc_log;
 };
 
 ///////////////Checks if is FF//////////////
@@ -119,7 +117,7 @@ if (_isCollision) then {
     _customMessage = [_customMessage,"You damaged a friendly as a driver."] joinString "<br/>";
     _timeAdded = 27;
     _offenceAdded = 0.15;
-    Info_4("COLLISION | %1 [%2]'s %3 %4", name _instigator, getPlayerUID _instigator, _vehicleType, _victimStats);
+    [2, format ["COLLISION | %1 [%2]'s %3 %4", name _instigator, getPlayerUID _instigator, _vehicleType, _victimStats], _filename] call A3A_fnc_log;
 };
 
 /////////Checks for important roles/////////
@@ -148,7 +146,7 @@ _exemption = switch (true) do {
 };
 if (!(_exemption isEqualTo "")) exitWith {
     private _playerStats = format["%1 [%2] %3, Avoided-time: %4, Avoided-offence: %5", name _instigator, getPlayerUID _instigator, _victimStats,str _timeAdded, str _offenceAdded];
-    Info_2("%1 | %2", _exemption, _playerStats);
+    [2, format ["%1 | %2", _exemption, _playerStats], _filename,true] call A3A_fnc_log;
     _exemption;
 };
 

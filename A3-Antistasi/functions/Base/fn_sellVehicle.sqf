@@ -31,10 +31,9 @@ params [
     ["_player",objNull,[objNull]],
     ["_veh",objNull,[objNull]]
 ];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+private _filename = "fn_sellVehicle";
 
-if (isNull _player) exitWith { Error("_player is null.") };
+if (isNull _player) exitWith {[1,"_player is null.",_filename] call A3A_fnc_log;};
 if (isNull _veh) exitWith {["Sell Vehicle", "You are not looking at a vehicle."] remoteExecCall ["A3A_fnc_customHint",_player];};
 
 if (_veh getVariable ["A3A_sellVehicle_inProgress",false]) exitWith {["Sell Vehicle", "Vehicle sale already in progress."] remoteExecCall ["A3A_fnc_customHint",_player];};

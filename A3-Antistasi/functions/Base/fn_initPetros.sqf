@@ -1,6 +1,5 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
-Info("initPetros started");
+private _fileName = "fn_initPetros";
+[2,"initPetros started",_fileName] call A3A_fnc_log;
 scriptName "fn_initPetros";
 removeHeadgear petros;
 removeGoggles petros;
@@ -95,10 +94,10 @@ petros addMPEventHandler ["mpkilled",
 
 private _removeProblematicAceInteractions = {
     _this spawn {
-        //Wait until we've got A3A_hasACE initialised fully
+        //Wait until we've got hasACE initialised fully
         waitUntil {!isNil "initVar"};
         //Disable ACE Interactions
-        if (hasInterface && A3A_hasACE) then {
+        if (hasInterface && hasACE) then {
             [typeOf _this, 0,["ACE_ApplyHandcuffs"]] call ace_interact_menu_fnc_removeActionFromClass;
             [typeOf _this, 0,["ACE_MainActions", "ACE_JoinGroup"]] call ace_interact_menu_fnc_removeActionFromClass;
         };
@@ -109,4 +108,4 @@ private _removeProblematicAceInteractions = {
 //This'll prevent it breaking in the future.
 [petros, _removeProblematicAceInteractions] remoteExec ["call", 0, petros];
 
-Info("initPetros completed");
+[2,"initPetros completed",_fileName] call A3A_fnc_log;

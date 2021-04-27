@@ -60,9 +60,9 @@ _mrk setMarkerBrush "DiagGrid";
 _mrk setMarkerText _textX;
 [_mrk,0] remoteExec ["setMarkerAlpha",[Occupants,Invaders]];
 
-private _taskId = "Mines" + str A3A_taskCount;
-[[teamPlayer,civilian],_taskId,[format ["An Engineer Team has been deployed at your command with High Command Option. Once they reach the position, they will start to deploy %1 mines in the area. Cover them in the meantime.",_quantity],"Minefield Deploy",_mrk],_positionTel,false,0,true,"map",true] call BIS_fnc_taskCreate;
-[_taskId, "Mines", "CREATED"] remoteExecCall ["A3A_fnc_taskUpdate", 2];
+[[teamPlayer,civilian],"Mines",[format ["An Engineer Team has been deployed at your command with High Command Option. Once they reach the position, they will start to deploy %1 mines in the area. Cover them in the meantime.",_quantity],"Minefield Deploy",_mrk],_positionTel,false,0,true,"map",true] call BIS_fnc_taskCreate;
+//_tsk = ["Mines",[teamPlayer,civilian],[format ["An Engineer Team has been deployed at your command with High Command Option. Once they reach the position, they will start to deploy %1 mines in the area. Cover them in the meantime.",_quantity],"Minefield Deploy",_mrk],_positionTel,"CREATED",5,true,true,"map"] call BIS_fnc_setTask;
+//missionsX pushBack _tsk; publicVariable "missionsX";
 
 _groupX = createGroup teamPlayer;
 
@@ -115,17 +115,19 @@ if ((_truckX distance _positionTel < 50) and ({alive _x} count units _groupX > 0
 			_mineX = createMine [_typeX,_positionTel,[],100];
 			teamPlayer revealMine _mineX;
 			};
-		[_taskId, "Mines", "SUCCEEDED"] call A3A_fnc_taskSetState;
+		["Mines",[format ["An Engineer Team has been deployed at your command with High Command Option. Once they reach the position, they will start to deploy %1 mines in the area. Cover them in the meantime.",_quantity],"Minefield Deploy",_mrk],_positionTel,"SUCCEEDED","Map"] call A3A_fnc_taskUpdate;
 		sleep 15;
-		[_taskId, "Mines", 0] spawn A3A_fnc_taskDelete;
+		//_nul = [_tsk,true] call BIS_fnc_deleteTask;
+		_nul = [0,"Mines"] spawn A3A_fnc_deleteTask;
 		[2,_costs] remoteExec ["A3A_fnc_resourcesFIA",2];
 		}
 	else
 		{
-		[_taskId, "Mines", "FAILED"] call A3A_fnc_taskSetState;
+		["Mines",[format ["An Engineer Team has been deployed at your command with High Command Option. Once they reach the position, they will start to deploy %1 mines in the area. Cover them in the meantime.",_quantity],"Minefield Deploy",_mrk],_positionTel,"FAILED","Map"] call A3A_fnc_taskUpdate;
 		sleep 15;
 		theBoss hcRemoveGroup _groupX;
-		[_taskId, "Mines", 0] spawn A3A_fnc_taskDelete;
+		//_nul = [_tsk,true] call BIS_fnc_deleteTask;
+		_nul = [0,"Mines"] spawn A3A_fnc_deleteTask;
 		{deleteVehicle _x} forEach units _groupX;
 		deleteGroup _groupX;
 		deleteVehicle _truckX;
@@ -134,10 +136,11 @@ if ((_truckX distance _positionTel < 50) and ({alive _x} count units _groupX > 0
 	}
 else
 	{
-	[_taskId, "Mines", "FAILED"] call A3A_fnc_taskSetState;
+	["Mines",[format ["An Engineer Team has been deployed at your command with High Command Option. Once they reach the position, they will start to deploy %1 mines in the area. Cover them in the meantime.",_quantity],"Minefield Deploy",_mrk],_positionTel,"FAILED","Map"] call A3A_fnc_taskUpdate;
 	sleep 15;
 	theBoss hcRemoveGroup _groupX;
-	[_taskId, "Mines", 0] spawn A3A_fnc_taskDelete;
+	//_nul = [_tsk,true] call BIS_fnc_deleteTask;
+	_nul = [0,"Mines"] spawn A3A_fnc_deleteTask;
 	{deleteVehicle _x} forEach units _groupX;
 	deleteGroup _groupX;
 	deleteVehicle _truckX;

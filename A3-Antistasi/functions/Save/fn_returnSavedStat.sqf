@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 private _varName = _this select 0;
 
 _loadVariable = {
@@ -16,6 +14,6 @@ if (isNil "_varValue") then {
 	_varValue = [_spanishVarName] call _loadVariable;
 };
 if (isNil "_varValue") exitWith {
-    Error_1("Variable %1 does not exist.", _varName);
+	diag_log format ["%1: [Antistasi] | ERROR | A3A_fnc_returnSavedStat | Variable %2 does not exist.",servertime, _varName];
 };
 _varValue;

@@ -34,13 +34,13 @@ params
     ["_side", sideEnemy, [sideEnemy]],
     ["_revealCall", 0, [0]]
 ];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "sendSupport";
 
 //Ensure this is running on the main server, otherwise it will break
 if(!isServer) exitWith
 {
-    Error_1("SendSupport tried to execute on %1, which is not the hosting server!", clientOwner);
+    [1, format ["SendSupport tried to execute on %1, which is not the hosting server!", clientOwner], _fileName] call A3A_fnc_log;
     _this remoteExec ["A3A_fnc_sendSupport", 2];
 };
 
@@ -67,7 +67,7 @@ private _supportArray = if(_side == Occupants) then {occupantsSupports} else {in
 
     if((_index != -1) && {_supportType in ["AIRSTRIKE", "QRF"]}) then
     {
-        Info_1("Blocking %1 support for given position, as another support of this type is near", _supportType);
+        [2, format ["Blocking %1 support for given position, as another support of this type is near", _supportType], _fileName] call A3A_fnc_log;
         _index = -1;
         _blockedSupports pushBack _supportType;
     };
@@ -85,7 +85,11 @@ if (_supportObject != "") exitWith
     supportCallInProgress = false;
     if(_supportType != "QRF") then
     {
-        Info_1("Support of type %1 is already in the area, transmitting attack orders", _supportType);
+        [
+            2,
+            format ["Support of type %1 is already in the area, transmitting attack orders", _supportType],
+            _fileName
+        ] call A3A_fnc_log;
 
         //Attack with already existing support
         if(_supportType in ["MORTAR"]) then
@@ -115,11 +119,11 @@ private _timerIndex = -1;
 
 if(_selectedSupport == "") exitWith
 {
-    Info_1("No support available to support at %1", _supportPos);
+    [2, format ["No support available to support at %1", _supportPos], _fileName] call A3A_fnc_log;
     supportCallInProgress = false;
 };
 
-Info_2("Sending support type %1 to help at %2", _selectedSupport, _supportPos);
+[2, format ["Sending support type %1 to help at %2", _selectedSupport, _supportPos], _fileName] call A3A_fnc_log;
 
 if(_selectedSupport in ["MORTAR", "QRF", "AIRSTRIKE", "ORBSTRIKE", "CARPETBOMB"]) then
 {

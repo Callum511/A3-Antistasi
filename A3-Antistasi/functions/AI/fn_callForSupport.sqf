@@ -14,13 +14,13 @@ params ["_group", "_supportTypes", "_target"];
     Returns:
         Nothing
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "callForSupport";
 private _groupLeader = leader _group;
 
 if(side _group == teamPlayer) exitWith
 {
-    Error_1("Rebel group %1 managed to call callForSupport, not allowed for rebel groups", _group);
+    [1, format ["Rebel group %1 managed to call callForSupport, not allowed for rebel groups", _group], _fileName] call A3A_fnc_log;
 };
 
 if((_group getVariable ["canCallSupportAt", -1]) > (dateToNumber date)) exitWith {};
@@ -34,7 +34,11 @@ _group setVariable ["canCallSupportAt", _dateNumber, true];
 //If groupleader is down, dont call support
 if !([_groupLeader] call A3A_fnc_canFight) exitWith {};
 
-Debug_4("Leader of %1 (side %2) is starting to call for help against %3 with helps %4", _group, side _group, _target, _supportTypes);
+[
+    3,
+    format ["Leader of %1 (side %2) is starting to call for help against %3 with helps %4", _group, side _group, _target, _supportTypes],
+    _fileName
+] call A3A_fnc_log;
 
 //Lower skill of group leader to simulate radio communication (!!!Barbolanis idea!!!)
 private _oldSkill = skill _groupLeader;
@@ -52,12 +56,12 @@ if([_groupLeader] call A3A_fnc_canFight) then
 {
     private _revealed = [getPos _groupLeader, side _group] call A3A_fnc_calculateSupportCallReveal;
     //Starting the support
-    Debug_3("%1 managed to call help against %2, reveal value is %3", _group, _target, _revealed);
+    [3, format ["%1 managed to call help against %2, reveal value is %3", _group, _target, _revealed], _fileName] call A3A_fnc_log;
     [_target, _group knowsAbout _target, _supportTypes, side _group, _revealed] remoteExec ["A3A_fnc_sendSupport", 2];
 }
 else
 {
     //Support call failed, resetting cooldown
-    Debug_1("%1 got no help as the leader is dead or down", _group);
+    [3, format ["%1 got no help as the leader is dead or down", _group], _fileName] call A3A_fnc_log;
     _group setVariable ["canCallSupportAt", -1, true];
 };

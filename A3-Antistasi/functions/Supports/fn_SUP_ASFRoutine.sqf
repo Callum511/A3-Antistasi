@@ -1,6 +1,6 @@
 params ["_side", "_timerIndex", "_sleepTime", "_airport", "_supportName", "_setupPos"];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "SUP_ASFRoutine";
 
 private _plane = if (_side == Occupants) then {vehNATOPlaneAA} else {vehCSATPlaneAA};
 private _crewUnits = if(_side == Occupants) then {NATOPilot} else {CSATPilot};
@@ -157,7 +157,7 @@ private _height = (ATLToASL _supportPos) select 2;
 _height = _height + 500;
 
 private _entryPos = _setupPos getPos [_lenght, _dir + _angle];
-Debug_1("Entry Pos: %1", _entryPos);
+[3, format ["Entry Pos: %1", _entryPos], _fileName] call A3A_fnc_log;
 _entryPos set [2, _height];
 
 private _areaWP = _strikeGroup addWaypoint [_entryPos, 50];
@@ -190,7 +190,7 @@ while {_timeAlive > 0} do
 {
     if !(_strikePlane getVariable "CurrentlyAttacking") then
     {
-        //Debug_1("Searching new target for %1", _supportName);
+        //[3, format ["Searching new target for %1", _supportName], _fileName] call A3A_fnc_log;
         //Plane is currently not attacking a target, search for new order
         private _targetList = server getVariable [format ["%1_targets", _supportName], []];
         if (count _targetList > 0) then
@@ -199,7 +199,7 @@ while {_timeAlive > 0} do
             private _target = _targetList deleteAt 0;
             server setVariable [format ["%1_targets", _supportName], _targetList, true];
 
-            Debug_2("Next target for %2 is %1", _target, _supportName);
+            [3, format ["Next target for %2 is %1", _target, _supportName], _fileName] call A3A_fnc_log;
 
             //Parse targets
             private _targetParams = _target select 0;
@@ -262,11 +262,11 @@ while {_timeAlive > 0} do
             if(isNull _targetObj || {!(alive _targetObj)}) then
             {
                 _possibleKills = _possibleKills - 1;
-                Debug_1("Target destroyed, %1 returns to cycle mode", _supportName);
+                [3, format ["Target destroyed, %1 returns to cycle mode", _supportName], _fileName] call A3A_fnc_log;
             }
             else
             {
-                Debug_1("Target evaded, %1 returns to cycle mode", _supportName)
+                [3, format ["Target evaded, %1 returns to cycle mode", _supportName], _fileName] call A3A_fnc_log;
             };
 
             //Target destroyed
@@ -297,20 +297,27 @@ while {_timeAlive > 0} do
         {({alive _x} count (units _strikeGroup)) == 0}
     ) exitWith
     {
-        Info_1("%1 has been destroyed or crew killed, aborting routine", _supportName);
-        [_side, 20, 45] remoteExec ["A3A_fnc_addAggression", 2];
+        [2,format ["%1 has been destroyed or crew killed, aborting routine", _supportName],_fileName] call A3A_fnc_log;
+        if(_side == Occupants) then
+        {
+            [[20, 45], [0, 0]] remoteExec ["A3A_fnc_prestige", 2];
+        }
+        else
+        {
+            [[0, 0], [20, 45]] remoteExec ["A3A_fnc_prestige", 2];
+        };
     };
 
     //No missiles left
     if (!(_strikePlane getVariable "CurrentlyAttacking") && (_possibleKills <= 0)) exitWith
     {
-        Info_1("%1 has no more missiles left to fire, aborting routine", _supportName);
+        [2,format ["%1 has no more missiles left to fire, aborting routine", _supportName],_fileName] call A3A_fnc_log;
     };
 
     //Retreating
     if(_strikePlane getVariable ["Retreat", false]) exitWith
     {
-        Info_1("%1 met heavy resistance, retreating", _supportName);
+        [2,format ["%1 met heavy resistance, retreating", _supportName], _fileName] call A3A_fnc_log;
     };
 
     sleep 5;
@@ -328,7 +335,7 @@ if (alive _strikePlane && {!(isNull (driver _strikePlane)) && {[driver _strikePl
     _wpBase setWaypointType "MOVE";
     _wpBase setWaypointBehaviour "CARELESS";
     _wpBase setWaypointSpeed "FULL";
-    _wpBase setWaypointStatements ["true", "if !(local this) exitWith {}; deleteVehicle (vehicle this); {deleteVehicle _x} forEach thisList"];
+    _wpBase setWaypointStatements ["", "deleteVehicle (vehicle this); {deleteVehicle _x} forEach thisList"];
     _strikeGroup setCurrentWaypoint _wpBase;
 
     waitUntil {sleep 0.5;_strikePlane distance2D (getMarkerPos _airport) < 100};

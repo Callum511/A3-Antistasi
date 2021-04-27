@@ -9,8 +9,7 @@ params
     ["_convoyType", "PATROL", [""]],
     ["_convoySide", sideEnemy, [sideEnemy]]
 ];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
 /*  Creates a convoy for simulated movement
 *   Params:
 *     _convoyID: NUMBER; the unique convoy ID
@@ -23,13 +22,13 @@ FIX_LINE_NUMBERS()
 *     Nothing
 */
 
-if (isNil "_convoyID") exitWith {Error("CreateConvoy: No convoy ID given")};
-if (isNil "_units" || {count _units == 0}) exitWith {Error_1("CreateConvoy[%1]: No units given for convoy!", _convoyID)};
-if (isNil "_origin") exitWith {Error_1("CreateConvoy[%1]: No origin given for the convoy!", _convoyID)};
-if (isNil "_destination") exitWith {Error_1("CreateConvoy[%1]: No destination given for the convoy!", _convoyID)};
+if (isNil "_convoyID") exitWith {diag_log "CreateConvoy: No convoy ID given"};
+if (isNil "_units" || {count _units == 0}) exitWith {diag_log format ["CreateConvoy[%1]: No units given for convoy!", _convoyID]};
+if (isNil "_origin") exitWith {diag_log format ["CreateConvoy[%1]: No origin given for the convoy!", _convoyID]};
+if (isNil "_destination") exitWith {diag_log format ["CreateConvoy[%1]: No destination given for the convoy!", _convoyID]};
 
 private _fileName = "createConvoy";
-Debug_1("Input is %1", str _this);
+[3, format ["Input is %1", str _this], _fileName] call A3A_fnc_log;
 
 _hasAir = false;
 _hasLand = false;
@@ -75,7 +74,7 @@ else
 };
 
 if (_route isEqualTo []) exitWith {
-    Info_3("CreateConvoy[%1]: Unable to create convoy, no valid path. HasAir: %2, HasLand: %3", _convoyID, _hasAir, _hasLand);
+	diag_log format ["CreateConvoy[%1]: Unable to create convoy, no valid path. HasAir: %2, HasLand: %3", _convoyID, _hasAir, _hasLand];
 };
 
 _markerPrefix = if(colorTeamPlayer == "colorGUER") then {"b"} else {"n"};
@@ -106,6 +105,7 @@ else
     _convoyMarker setMarkerText (format ["[GPS-%3] %1 %2 Convoy", nameInvaders, _convoyType, _convoyID]);
 };
 
-Info_5("CreateConvoy[%1]: Created convoy with %2 m/s and a total of %3 waypoints, marker is %4%5", _convoyID, _velocity, count _route, _markerPrefix, _markerType);
+
+diag_log format ["CreateConvoy[%1]: Created convoy with %2 m/s and a total of %3 waypoints, marker is %4%5", _convoyID, _velocity, count _route, _markerPrefix, _markerType];
 
 [_convoyID, _route, _markerArray, _velocity, _units, _convoySide, _convoyType, (!_hasLand)] spawn A3A_fnc_convoyMovement;

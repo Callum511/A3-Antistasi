@@ -1,6 +1,6 @@
 params ["_sleepTime", "_launcher", "_side", "_supportName"];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
+private _fileName = "SUP_SAMRoutine";
 sleep _sleepTime;
 
 private _rounds = 4;
@@ -40,7 +40,7 @@ while {_onlineTime > 0} do
 
     if(_rounds <= 0) exitWith
     {
-        Info_1("%1 has no missiles left to fire, aborting", _supportName);
+        [2, format ["%1 has no missiles left to fire, aborting", _supportName], _fileName] call A3A_fnc_log;
     };
 
     sleep 10;

@@ -1,11 +1,10 @@
 #include "\A3\ui_f\hpp\defineDIKCodes.inc"
 #include "\A3\Ui_f\hpp\defineResinclDesign.inc"
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 scriptName "fn_arsenal_init.sqf";
 private _fileName = "fn_arsenal_init.sqf";
-Info("JNA init started");
+[2,"JNA init started",_fileName] call A3A_fnc_log;
 params [["_object",objNull,[objNull]]];
 
 //check if it was already initialised
@@ -54,7 +53,7 @@ jna_minItemMember set [IDC_RSCDISPLAYARSENAL_TAB_CARGOMAGALL, memberOnlyMagLimit
 
 //server
 if(isServer)then{
-    Info("JNA server detected");
+    [2,"JNA server detected",_fileName] call A3A_fnc_log;
 
     //load default if it was not loaded from savegame
     if(isnil "jna_dataList" )then{jna_dataList = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];};
@@ -62,7 +61,7 @@ if(isServer)then{
 
 //player
 if(hasInterface)then{
-    Info("JNA loading player data");
+    [2,"JNA loading player data",_fileName] call A3A_fnc_log;
 
     //add arsenal button
     _object addaction [
@@ -117,5 +116,5 @@ if(hasInterface)then{
         };
     }] call BIS_fnc_addScriptedEventHandler;
 };
-Info("JNA init completed");
+[2,"JNA init completed",_fileName] call A3A_fnc_log;
 arsenalInit = true;

@@ -1,5 +1,3 @@
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 params ["_destination", "_type", "_side", ["_arguments", []]];
 
 /*  Handles the creation of any AI Action
@@ -15,14 +13,14 @@ params ["_destination", "_type", "_side", ["_arguments", []]];
 
 if(!serverInitDone) then
 {
-    Debug("CreateAIAction: Waiting for server init to be completed!");
+  diag_log "CreateAIAction: Waiting for server init to be completed!";
   waitUntil {sleep 1; serverInitDone};
 };
 
-if(isNil "_destination") exitWith {Error("CreateAIAction: No destination given for AI Action");};
+if(isNil "_destination") exitWith {diag_log "CreateAIAction: No destination given for AI Action"};
 _acceptedTypes = ["attack", "patrol", "reinforce", "convoy", "airstrike"];
-if(isNil "_type" || {!((toLower _type) in _acceptedTypes)}) exitWith {Error("CreateAIAction: Type is not in the accepted types")};
-if(isNil "_side" || {!(_side == Occupants || _side == Invaders)}) exitWith {Error("CreateAIAction: Can only create AI for Inv and Occ")};
+if(isNil "_type" || {!((toLower _type) in _acceptedTypes)}) exitWith {diag_log "CreateAIAction: Type is not in the accepted types"};
+if(isNil "_side" || {!(_side == Occupants || _side == Invaders)}) exitWith {diag_log "CreateAIAction: Can only create AI for Inv and Occ"};
 
 _convoyID = round (random 1000);
 _IDinUse = server getVariable [format ["Con%1", _convoyID], false];
@@ -43,12 +41,12 @@ _convoyID spawn
 _type = toLower _type;
 _isMarker = _destination isEqualType "";
 _targetString = if(_isMarker) then {_destination} else {str _destination};
-Debug_3("CreateAIAction[%1]: Started creation of %2 action to %3", _convoyID, _type, _targetString);
+diag_log format ["CreateAIAction[%1]: Started creation of %2 action to %3", _convoyID, _type, _targetString];
 
 _nearestMarker = if(_isMarker) then {_destination} else {[markersX,_destination] call BIS_fnc_nearestPosition};
 if ([_nearestMarker,false] call A3A_fnc_fogCheck < 0.3) exitWith
 {
-    Debug_2("CreateAIAction[%1]: AI Action on %2 cancelled because of heavy fog", _convoyID, _targetString);
+  diag_log format ["CreateAIAction[%1]: AI Action on %2 cancelled because of heavy fog", _convoyID, _targetString];
   server setVariable [format ["Con%1", _convoyID], nil, true];
 };
 
@@ -76,7 +74,7 @@ else
 };
 if(_abort) exitWith
 {
-    Debug_1("CreateAIAction[%1]: Aborting creation of AI action because, there is already a action close by!", _convoyID);
+  diag_log format ["CreateAIAction[%1]: Aborting creation of AI action because, there is already a action close by!", _convoyID];
   server setVariable [format ["Con%1", _convoyID], nil, true];
 };
 
@@ -93,7 +91,7 @@ if (gameMode <3) then
 };
 if ((_allUnits + 4 > maxUnits) or (_allUnitsSide + 4 > _maxUnitsSide)) then {_abort = true};
 
-if (_abort) exitWith {Debug_2("CreateAIAction[%1]: AI action cancelled because of reaching the maximum of units on attacking %2", _convoyID, _destination)};
+if (_abort) exitWith {diag_log format ["CreateAIAction[%1]: AI action cancelled because of reaching the maximum of units on attacking %2", _convoyID, _destination]};
 */
 
 
@@ -212,7 +210,7 @@ if(_type == "patrol") then
   }
   else
   {
-      Debug_1("CreateAIAction[%1]: Patrol aborted as no base is available!", _convoyID);
+    diag_log format ["CreateAIAction[%1]: Patrol aborted as no base is available!", _convoyID];
     _abort = true;
   };
 };
@@ -229,7 +227,7 @@ if(_type == "reinforce") then
 
     if(_units isEqualTo []) then
     {
-      Error_1("CreateAIAction[%1]: No units given for reinforcements!", _convoyID);
+      diag_log format ["CreateAIAction[%1]: No units given for reinforcements!", _convoyID];
       _abort = true;
     }
     else
@@ -243,14 +241,14 @@ if(_type == "reinforce") then
       _cargoCount = _cargoCount + (_countUnits select 1) + (_countUnits select 2);
 
       //For debug is direct placement
-      //Trace_2("Reinforce %1 from %2", _target, _selectedBase);
+      //diag_log format ["Reinforce %1 from %2", _target, _selectedBase];
       //[_units, "Reinf units"] call A3A_fnc_logArray;
       //[_target, _units] call A3A_fnc_addGarrison;
     };
   }
   else
   {
-      Debug_1("CreateAIAction[%1]: Reinforcement aborted as no base is available!", _convoyID);
+    diag_log format ["CreateAIAction[%1]: Reinforcement aborted as no base is available!", _convoyID];
     _abort = true;
   };
 };
@@ -305,7 +303,7 @@ if(_type == "airstrike") then
           if(isNil "napalmEnabled") then
           {
             //This seems to be a merge bug
-            Error("CreateAIAction: napalmEnabled does not contains a value, assuming false!");
+            diag_log "CreateAIAction: napalmEnabled does not contains a value, assuming false!";
             napalmEnabled = false;
           };
           _bombType = if (napalmEnabled) then {"NAPALM"} else {"CLUSTER"};
@@ -325,7 +323,7 @@ if(_type == "airstrike") then
     			} forEach _enemies;
         };
         if (!_isMarker) then {airstrike pushBack _destinationPos};
-        Debug_3("CreateAIAction[%1]: Selected airstrike of bombType %2 from %3",_convoyID, _bombType, _airport);
+        diag_log format ["CreateAIAction[%1]: Selected airstrike of bombType %2 from %3",_convoyID, _bombType, _airport];
         _origin = _airport;
         _originPos = getMarkerPos _airport;
         _units pushBack [_plane, [_crewUnits],[]];
@@ -334,19 +332,19 @@ if(_type == "airstrike") then
       }
       else
       {
-          Debug_1("CreateAIAction[%1]: Aborting airstrike as the airplane is currently not available", _convoyID);
+        diag_log format ["CreateAIAction[%1]: Aborting airstrike as the airplane is currently not available", _convoyID];
         _abort = true;
       };
     }
     else
     {
-        Debug_1("CreateAIAction[%1]: Aborting airstrike, cause there are too many friendly units in the area", _convoyID);
+      diag_log format ["CreateAIAction[%1]: Aborting airstrike, cause there are too many friendly units in the area", _convoyID];
       _abort = true;
     };
   }
   else
   {
-      Debug_1("CreateAIAction[%1]: Aborting airstrike due to no avialable airport", _convoyID);
+    diag_log format ["CreateAIAction[%1]: Aborting airstrike due to no avialable airport", _convoyID];
     _abort = true;
   };
 };
@@ -477,16 +475,16 @@ if(_type == "convoy") then
       	};
         default
         {
-            Debug_2("CreateAIAction[%1]: Aborting convoy, selected type not found, type was %2", _convoyID, _selectedType);
+          diag_log format ["CreateAIAction[%1]: Aborting convoy, selected type not found, type was %2", _convoyID, _selectedType];
           _abort = true;
         };
       };
       if(!_abort) then
       {
         //Deactivated, cause you can't win this mission currently
-//      [[teamPlayer,civilian],"CONVOY",[_text,_taskTitle,_destination], _destinationPos,false,0,true,_taskIcon,true] call BIS_fnc_taskCreate;
-//      [[_side],"CONVOY1",[format ["A convoy from %1 to %3, it's about to depart at %2. Protect it from any possible attack.",_nameOrigin,_displayTime,_nameDest],"Protect Convoy",_destination],_destinationPos,false,0,true,"run",true] call BIS_fnc_taskCreate;
-//      missionsX pushBack ["CONVOY","CREATED"]; publicVariable "missionsX";
+        [[teamPlayer,civilian],"CONVOY",[_text,_taskTitle,_destination], _destinationPos,false,0,true,_taskIcon,true] call BIS_fnc_taskCreate;
+        [[_side],"CONVOY1",[format ["A convoy from %1 to %3, it's about to depart at %2. Protect it from any possible attack.",_nameOrigin,_displayTime,_nameDest],"Protect Convoy",_destination],_destinationPos,false,0,true,"run",true] call BIS_fnc_taskCreate;
+        missionsX pushBack ["CONVOY","CREATED"]; publicVariable "missionsX";
 
         sleep (_timeLimit * 60);
         _crewUnits = if(_side == Occupants) then {NATOCrew} else {CSATCrew};
@@ -592,13 +590,13 @@ if(_type == "convoy") then
     }
     else
     {
-        Debug_1("CreateAIAction[%1]: Aborting convoy, as no base is available to send a convoy", _convoyID);
+      diag_log format ["CreateAIAction[%1]: Aborting convoy, as no base is available to send a convoy", _convoyID];
       _abort = true;
     };
   }
   else
   {
-      Debug_1("CreateAIAction[%1]: Side of convoy does not match side of destination, aborting!", _convoyID);
+    diag_log format ["CreateAIAction[%1]: Side of convoy does not match side of destination, aborting!", _convoyID];
     _abort = true;
   };
 };
@@ -610,7 +608,7 @@ if(_abort) exitWith
 };
 
 _target = if(_destination isEqualType "") then {_destination} else {str _destination};
-Info_6("CreateAIAction[%1]: Created AI action to %2 from %3 to %4 with %5 vehicles and %6 units", _convoyID, _type, _origin, _targetString, _vehicleCount , _cargoCount);
+diag_log format ["CreateAIAction[%1]: Created AI action to %2 from %3 to %4 with %5 vehicles and %6 units", _convoyID, _type, _origin, _targetString, _vehicleCount , _cargoCount];
 
 [_convoyID, _units, _originPos, _destinationPos, [_origin, if(_isMarker) then {_destination} else {""}], _type, _side] spawn A3A_fnc_createConvoy;
 true;

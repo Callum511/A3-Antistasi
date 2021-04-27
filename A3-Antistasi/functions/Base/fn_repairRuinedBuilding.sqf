@@ -1,8 +1,7 @@
 //Repairs a destroyed building.
 //Parameter can either be the ruin of a building, or the building itself buried underneath the ruins.
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
-if (!isServer) exitWith { Error("Server-only function miscalled") };
+
+if (!isServer) exitWith { [1, "Server-only function miscalled", "fn_repairRuinedBuilding"] call A3A_fnc_log };
 
 params ["_target"];
 

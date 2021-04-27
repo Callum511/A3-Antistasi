@@ -25,10 +25,9 @@ _mrk setMarkerShape "ICON";
 
 _dateLimit = [date select 0, date select 1, date select 2, date select 3, (date select 4) + 60];
 _dateLimitNum = dateToNumber _dateLimit;
-private _taskId = "outpostsFIA" + str A3A_taskCount;
-[[teamPlayer,civilian],_taskId,["We are sending a team to establish a Watchpost/Roadblock. Use HC to send the team to their destination","Post \ Roadblock Deploy",_mrk],_positionTel,false,0,true,"Move",true] call BIS_fnc_taskCreate;
-[_taskId, "outpostsFIA", "CREATED"] remoteExecCall ["A3A_fnc_taskUpdate", 2];
-
+[[teamPlayer,civilian],"outpostsFIA",["We are sending a team to establish a Watchpost/Roadblock. Use HC to send the team to their destination","Post \ Roadblock Deploy",_mrk],_positionTel,false,0,true,"Move",true] call BIS_fnc_taskCreate;
+//_tsk = ["outpostsFIA",[teamPlayer,civilian],["We are sending a team to establish a Watchpost/Roadblock. Use HC to send the team to their destination","Post \ Roadblock Deploy",_mrk],_positionTel,"CREATED",5,true,true,"Move"] call BIS_fnc_setTask;
+//missionsX pushBackUnique _tsk; publicVariable "missionsX";
 _formatX = [];
 {
 if (random 20 <= skillFIA) then {_formatX pushBack (_x select 1)} else {_formatX pushBack (_x select 0)};
@@ -64,7 +63,8 @@ if ({(alive _x) and (_x distance _positionTel < 10)} count units _groupX > 0) th
 	markersX = markersX + [_mrk];
 	publicVariable "markersX";
 	spawner setVariable [_mrk,2,true];
-	[_taskId, "outpostsFIA", "SUCCEEDED"] call A3A_fnc_taskSetState;
+	["outpostsFIA",["We are sending a team to establish a Watchpost/Roadblock. Use HC to send the team to their destination","Post \ Roadblock Deploy",_mrk],_positionTel,"SUCCEEDED"] call A3A_fnc_taskUpdate;
+	//["outpostsFIA", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
 	_nul = [-5,5,_positionTel] remoteExec ["A3A_fnc_citySupportChange",2];
 	_mrk setMarkerType "loc_bunker";
 	_mrk setMarkerColor colorTeamPlayer;
@@ -80,7 +80,8 @@ if ({(alive _x) and (_x distance _positionTel < 10)} count units _groupX > 0) th
 	}
 else
 	{
-	[_taskId, "outpostsFIA", "FAILED"] call A3A_fnc_taskSetState;
+	["outpostsFIA",["We are sending a team to establish a Watchpost/Roadblock. Use HC to send the team to their destination","Post \ Roadblock Deploy",_mrk],_positionTel,"FAILED"] call A3A_fnc_taskUpdate;
+	//["outpostsFIA", "FAILED",true] spawn BIS_fnc_taskSetState;
 	sleep 3;
 	deleteMarker _mrk;
 	};
@@ -91,4 +92,4 @@ deleteVehicle _truckX;
 deleteGroup _groupX;
 sleep 15;
 
-[_taskId, "outpostsFIA", 0] spawn A3A_fnc_taskDelete;
+_nul = [0,"outpostsFIA"] spawn A3A_fnc_deleteTask;

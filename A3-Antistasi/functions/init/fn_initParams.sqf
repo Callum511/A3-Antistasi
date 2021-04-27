@@ -9,10 +9,10 @@
     Environment: Init
     Dependencies: Save game (if any) must have been selected
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 
-Info("Initializing global params");
+private _filename = "fn_initParams";
+
+[2, "Initializing global params", _filename] call A3A_fnc_log;
 
 // A3A_paramTable format: ["globalvar", "paramname", [options], default]
 // globalvar is the name of the saved parameter as well as the global variable
@@ -53,7 +53,7 @@ A3A_paramTable = [
     ["membershipEnabled", "membership", [], true],
     ["switchCom", "switchComm", ["server"], true],						// dead param
     ["tkpunish", "tkPunish", [], true],
-    ["pvpEnabled", "allowPvP", [], false],
+    ["pvpEnabled", "allowPvP", [], true],
     ["allowMembersFactionGarageAccess", "allowMembersFactionGarageAccess", [], true],
     ["memberDistance", "memberDistance", [], 5000],
     ["memberSlots", "memberSlots", ["server"], 20],
@@ -102,7 +102,7 @@ A3A_paramTable = [
     // beware of the comma
 ];
 
-Debug("Setting default params");
+[3, "Setting default params", _filename] call A3A_fnc_log;
 
 // Set all parameters to their defaults if not already set (SP may set them from dialogs)
 {
@@ -112,7 +112,8 @@ Debug("Setting default params");
     };
 } forEach A3A_paramTable;
 
-Debug("Loading params from saved game");
+
+[3, "Loading params from saved game", _filename] call A3A_fnc_log;
 
 // Load parameter values from saved game
 if (loadLastSave) then
@@ -121,7 +122,7 @@ if (loadLastSave) then
     private _savedParams = ["params"] call A3A_fnc_returnSavedStat;
     if (isNil "_savedParams") exitWith
     {
-        Info("No params array found in saved game, treating as legacy save");
+        [2, "No params array found in saved game, treating as legacy save", _filename] call A3A_fnc_log;
 
         // Special case for legacy difficultyX + SP, ugh
         private _difficultyX = ["difficultyX"] call A3A_fnc_returnSavedStat;
@@ -146,17 +147,17 @@ if (loadLastSave) then
         _x params ["_savedName", "_savedValue"];
         private _idx = A3A_paramTable findIf { _x#0 == _savedName };
         if (_idx == -1) then {
-            Error_1("Unknown parameter %1 found in saved game", _savedName);
+            [1, format ["Unknown parameter %1 found in saved game", _savedName], _filename] call A3A_fnc_log;
         } else {
             if !(_savedValue isEqualType A3A_paramTable#_idx#3) exitWith {
-                Error_1("Bad parameter type for %1 in saved game", _savedName);
+                [1, format ["Bad parameter type for %1 in saved game", _savedName], _filename] call A3A_fnc_log;
             };
             missionNamespace setVariable [_savedName, _savedValue];
         };
     } forEach _savedParams;
 };
 
-Debug("Setting overrides from role-screen params");
+[3, "Setting overrides from role-screen params", _filename] call A3A_fnc_log;
 
 // Set non-default values from role-screen parameters
 if (isMultiplayer) then {
@@ -170,7 +171,7 @@ if (isMultiplayer) then {
 
             private _val = [_paramName, 9998] call BIS_fnc_getParamValue;
             if (_val == 9998) exitWith {
-                Error_1("Param %1 not found", _paramName);
+                [1, format ["Param %1 not found", _paramName], _filename] call A3A_fnc_log;
             };
             if (_val == 9999) exitWith {};			// "Default (xxx)" option, do nothing here
 
@@ -182,11 +183,11 @@ if (isMultiplayer) then {
     } forEach A3A_paramTable;
 };
 
-Info("Param setup completed");
+[2, "Param setup completed", _filename] call A3A_fnc_log;
 
 initParamsDone = true; publicVariable "initParamsDone";
 
 // debug output
 {
-    Debug_2("Param %1 %2", _x#0, missionNamespace getVariable _x#0);
+    [3, format ["Param %1 %2", _x#0, missionNamespace getVariable _x#0], _filename] call A3A_fnc_log;
 } forEach A3A_paramTable;

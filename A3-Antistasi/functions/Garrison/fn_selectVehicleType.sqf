@@ -8,10 +8,10 @@ params ["_preference", "_side"];
 *   Returns:
 *     _result : STRING : The typename of the selected vehicle
 */
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
 
-Verbose_2("SelectVehicleType: Selecting vehicle now, preferred is %1, side is %2", _preference, _side);
+private _fileName = "SelectVehicleType";
+
+[4, format ["SelectVehicleType: Selecting vehicle now, preferred is %1, side is %2", _preference, _side], _fileName] call A3A_fnc_log;
 
 if(_preference == "LAND_AIR") exitWith
 {
@@ -118,11 +118,11 @@ if(_preference in ["AIR_GENERIC", "AIR_DEFAULT"]) then
 
 if(count _possibleVehicles == 0) exitWith
 {
-    Error_1("No result for %1, assuming bad parameter!", _preference);
+    [1, format ["No result for %1, assuming bad parameter!", _preference], _fileName] call A3A_fnc_log;
     "Empty";
 };
 
-Verbose_1("SelectVehicleType: Preselection done, possible vehicles are %1", str _possibleVehicles);
+[4, format ["SelectVehicleType: Preselection done, possible vehicles are %1", str _possibleVehicles], _fileName] call A3A_fnc_log;
 
 private _result = selectRandom _possibleVehicles;
 _result;

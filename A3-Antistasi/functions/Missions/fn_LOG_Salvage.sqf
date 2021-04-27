@@ -3,9 +3,8 @@ private _fileName = "fn_LOG_Salvage";
 if (!isServer and hasInterface) exitWith {};
 
 params ["_markerX"];
-#include "..\..\Includes\common.inc"
-FIX_LINE_NUMBERS()
-Info("Creating Salvage mission");
+
+[2, format ["Creating Salvage mission"], _filename] call A3A_fnc_log;
 
 private _positionX = getMarkerPos _markerX;
 
@@ -30,7 +29,7 @@ private _mrk3 = createMarker ["salvageLocation3", _mrk3Pos];
 _mrk3 setMarkerShape "ELLIPSE";
 _mrk3 setMarkerSize [25, 25];
 
-Debug_3("Salvage Mission Positions: %1, %2, %3", _mrk1Pos, _mrk2Pos, _mrk3Pos);
+[3, format ["Salvage Mission Positions: %1, %2, %3", _mrk1Pos, _mrk2Pos, _mrk3Pos], _filename] call A3A_fnc_log;
 
 private _difficultX = if (random 10 < tierWar) then {true} else {false};
 private _sideX = if (sidesX getVariable [_markerX,sideUnknown] == Occupants) then {Occupants} else {Invaders};
@@ -50,16 +49,16 @@ private _displayTime = [_dateLimit] call A3A_fnc_dateToTimeString;//Converts the
 private _nameDest = [_markerX] call A3A_fnc_localizar;
 private _title = "Salvage supplies";
 private _text = format ["A supply shipment was sunk outside of %1. Go there and recover the supplies before %2. You will need to get a hold of a boat with a winch to recover the shipment, check beaches for civilian boats you can commandeer.", _nameDest, _displayTime];
-private _taskId = "LOG" + str A3A_taskCount;
-[[teamPlayer, civilian], _taskId, [ _text, _title, [_mrk1, _mrk2, _mrk3]], _positionX, false, 0, true, "rearm", true] call BIS_fnc_taskCreate;
-[_taskId, "LOG", "CREATED"] remoteExecCall ["A3A_fnc_taskUpdate", 2];
+[[teamPlayer, civilian], "LOG",[ _text, _title, [_mrk1, _mrk2, _mrk3]], _positionX, false, 0, true, "rearm", true] call BIS_fnc_taskCreate;
+
+missionsX pushBack ["LOG","CREATED"]; publicVariable "missionsX";
 
 //salvageRope action
 [] remoteExec ["A3A_fnc_SalvageRope", 0, true];
 
-Debug("Mission created, waiting for players to get near");
+[3, format ["Mission created, waiting for players to get near"], _filename] call A3A_fnc_log;
 waitUntil {sleep 1;(dateToNumber date > _dateLimitNum) or ((spawner getVariable _markerX != 2) and !(sidesX getVariable [_markerX,sideUnknown] == teamPlayer))};
-Debug("players in spawning range, starting spawning");
+[3, format ["players in spawning range, starting spawning"], _filename] call A3A_fnc_log;
 
 
 private _boxPos = selectRandom [_mrk1Pos, _mrk2Pos, _mrk3Pos];
@@ -76,10 +75,10 @@ private _crateContents = selectRandom [
 	[_box, 0, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 _crateContents call A3A_fnc_fillLootCrate;
-Debug("Box spawned");
+[3, format ["Box spawned"], _filename] call A3A_fnc_log;
 
 //Create boat and initialise crew members
-Debug("Spawning patrol boat and crew");
+[3, format ["Spawning patrol boat and crew"], _filename] call A3A_fnc_log;
 private _typeVeh = if (_difficultX) then {if (_sideX == Occupants) then {vehNATOBoat} else {vehCSATBoat}} else {if (_sideX == Occupants) then {vehNATORBoat} else {vehCSATRBoat}};
 private _typeGroup = if (_difficultX) then {if (_sideX == Occupants) then {NATOSquad} else {CSATSquad}} else {if (_sideX == Occupants) then {groupsNATOmid select 0} else {groupsCSATmid select 0}};
 private _boatSpawnLocation = selectRandom [_mrk1Pos, _mrk2Pos, _mrk3Pos];
@@ -110,7 +109,8 @@ _vehCrewGroup addVehicle _veh;
 };
 
 //Disable simulation if we *really* want to
-Debug("Waiting for salvage mission end");
+
+[3, format ["Waiting for salvage mission end"], _filename] call A3A_fnc_log;
 waitUntil {sleep 1; (dateToNumber date > _dateLimitNum) or ((_box distance2D posHQ) < 100)};
 
 private _timeout = false;
@@ -122,20 +122,20 @@ if (dateToNumber date > _dateLimitNum) then {
 private _bonus = if (_difficultX) then {2} else {1};
 
 if (_timeout && alive _box) then {
-	[_taskId, "LOG", "FAILED"] call A3A_fnc_taskSetState;
+	["LOG",[ _text, _title,[_mrk1, _mrk2, _mrk3]],_positionX,"FAILED","rearm"] call A3A_fnc_taskUpdate;
 	[-10*_bonus,theBoss] call A3A_fnc_playerScoreAdd;
-    Info("Mission Failed");
+	[2, format ["Mission Failed"], _filename] call A3A_fnc_log;
 	deleteVehicle _box;
 } else {
-	[_taskId, "LOG", "SUCCEEDED"] call A3A_fnc_taskSetState;
+	["LOG",[ _text, _title,[_mrk1, _mrk2, _mrk3]],_positionX,"SUCCEEDED","rearm"] call A3A_fnc_taskUpdate;
 	[0,300*_bonus] remoteExec ["A3A_fnc_resourcesFIA",2];
 	{if (_x distance _box < 500) then {[10*_bonus,_x] call A3A_fnc_playerScoreAdd}} forEach (allPlayers - (entities "HeadlessClient_F"));
 	[5*_bonus,theBoss] call A3A_fnc_playerScoreAdd;
-    Info("Mission Succeeded");
+	[2, format ["Mission Succeeded"], _filename] call A3A_fnc_log;
 };
 
-[_taskId, "LOG", 1200] spawn A3A_fnc_taskDelete;
-Debug("set delete task timer");
+_nul = [1200,"LOG"] spawn A3A_fnc_deleteTask;
+[3, format ["set delete task timer"], _filename] call A3A_fnc_log;
 
 deleteMarker _mrk1;
 deleteMarker _mrk2;
