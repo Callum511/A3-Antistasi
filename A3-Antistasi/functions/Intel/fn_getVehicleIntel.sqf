@@ -54,11 +54,11 @@ switch (_type) do
     {
         if(_side == Occupants) then
         {
-            _allVehicles = [vehNATOPlane, vehNATOPlaneAA] + vehNATOTransportPlanes + ([vehNATOUAV, vehNATOUAVSmall] select {_x isNotEqualTo "not_supported"});
+            _allVehicles = [vehNATOPlane, vehNATOPlaneAA, vehNATOUAV, vehNATOUAVSmall] + vehNATOTransportPlanes;
         }
         else
         {
-            _allVehicles = [vehCSATPlane, vehCSATPlaneAA] + vehCSATTransportPlanes + ([vehCSATUAV, vehCSATUAVSmall] select {_x isNotEqualTo "not_supported"});
+            _allVehicles = [vehCSATPlane, vehCSATPlaneAA, vehCSATUAV, vehCSATUAVSmall] + vehCSATTransportPlanes;
         };
     };
 };

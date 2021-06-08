@@ -17,8 +17,7 @@ if (!isMultiplayer) then {
 };
 
 enableSaving [false,false];
-if !(toLower worldName == "cam_lao_nam") then {mapX setObjectTexture [0,"Pictures\Mission\whiteboard.jpg"];}
-	else {};
+mapX setObjectTexture [0,"Pictures\Mission\whiteboard.jpg"];
 
 
 Info("Init Started");

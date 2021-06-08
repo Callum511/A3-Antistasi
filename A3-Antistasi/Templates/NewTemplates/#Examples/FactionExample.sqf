@@ -108,7 +108,6 @@ _loadoutData setVariable ["heavyExplosives", []];
 _loadoutData setVariable ["antiTankGrenades", []];
 _loadoutData setVariable ["antiInfantryGrenades", []];
 _loadoutData setVariable ["smokeGrenades", []];
-_loadoutData setVariable ["signalsmokeGrenades", []];
 
 
 //Basic equipment. Shouldn't need touching most of the time.
@@ -266,7 +265,7 @@ private _squadLeaderTemplate = {
 	["items_squadLeader_extras"] call _fnc_addItemSet;
 	["items_miscEssentials"] call _fnc_addItemSet;
 	["antiInfantryGrenades", 2] call _fnc_addItem;
-	["signalsmokeGrenades", 2] call _fnc_addItem;
+	["smokeGrenades", 2] call _fnc_addItem;
 	["smokeGrenades", 2] call _fnc_addItem;
 
 	["maps"] call _fnc_addMap;

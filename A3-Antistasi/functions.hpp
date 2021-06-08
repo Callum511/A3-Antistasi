@@ -43,7 +43,6 @@ class A3A
 		class blackout {};
 		class buildHQ {};
         class calculateAggression {};
-        class canMoveHQ {};
         class chooseAttackType {};
 		class citiesToCivPatrol {};
 		class citySupportChange {};
@@ -77,7 +76,6 @@ class A3A
 		class keys {};
 		class localizar {};
 		class location {};
-        class lockStatic {};
 		class logPerformance {};
 		class markerChange {};
 		class moveHQ {};
@@ -117,9 +115,7 @@ class A3A
         class teleportVehicleToBase {};
         class timingCA {};
         class translateVariable {};
-        class unlockStatic {};
         class unlockVehicle {};
-        class updateRebelStatics {};
         class zoneCheck {};
     };
 
@@ -350,7 +346,6 @@ class A3A
     {
         class getVehicleIntel {};
         class placeIntel {};
-        class searchEncryptedIntel {};
         class searchIntelOnDocument {};
         class searchIntelOnLaptop {};
         class searchIntelOnLeader {};
@@ -387,7 +382,6 @@ class A3A
         class logistics_addLoadAction {};
         class logistics_getVehCapacity {};
         class logistics_initNodes {};
-        class logistics_isLoadable {};
     };
 
     class LogisticsFunctions
@@ -396,7 +390,6 @@ class A3A
         class logistics_addAction {};
         class logistics_addOrRemoveObjectMass {};
         class logistics_addWeaponAction {};
-        class logistics_attachCargo {};
         class logistics_canLoad {};
         class logistics_generateHardPoints {};
         class logistics_getCargoNodeType {};
@@ -449,7 +442,6 @@ class A3A
     };
 
     class ModsAndDLC {
-        class darkMapFix {};
         class getModOfConfigClass {};
         class initDisabledMods {};
         class isModNameVanilla {};
@@ -470,7 +462,6 @@ class A3A
         class equipmentSort {};
         class fillLootCrate {};
         class getRadio {};
-        class hasARadio {};
         class itemConfig {};
         class itemConfigMass {};
         class itemSort {};
@@ -665,7 +656,7 @@ class A3A
     class Templates
     {
         class aceModCompat {};
-		class compatibilityLoadFaction {};
+		class compatabilityLoadFaction {};
 		class getLoadout {};
 		class loadFaction {};
         class ifaModCompat {};
@@ -683,16 +674,14 @@ class A3A
 
     class Undercover
     {
-        class canGoUndercover {};
-        class goUndercover {};
         class initUndercover {};
+        class goUndercover {};
     };
 
     class Utility
     {
         class basicBackpack {};
         class classNameToModel {};
-        class countAttachedObjects {};
         class createDataObject {};
         class createNamespace {};
         class dateToTimeString {};

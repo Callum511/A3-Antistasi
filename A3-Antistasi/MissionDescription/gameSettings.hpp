@@ -7,7 +7,7 @@ Saving = 0;
 
 class Header
 {
-	gameType = ANTI;
+	gameType = CTI;
 	minplayers = 1;
 	maxplayers = 41;
 };

@@ -25,7 +25,8 @@
 params [["_crate", objNull], "_pickUp", ["_player", player]];
 
 if (_pickUp) then {
-    if (([_player] call A3A_fnc_countAttachedObjects) > 0) exitWith {systemChat "you are already carrying something."};
+    private _attachedObj = (attachedObjects _player)select {!(_x isEqualTo objNull)};
+    if !(count _attachedObj == 0) exitWith {systemChat "you are already carrying something."};
     _crate attachTo [_player, [0, 1.5, 0], "Pelvis"];
     _player setVariable ["carryingCrate", true];
     [_player ,_crate] spawn {
