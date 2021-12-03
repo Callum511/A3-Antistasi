@@ -23,7 +23,7 @@ A3A_hasADV = false;
 A3A_hasD3S = false;
 A3A_hasRDS = false;
 A3A_hasKAT = false;
-
+A3A_hasCUP = false;
 //Actual Detection
 //IFA Detection
 //Deactivated for now, as IFA is having some IP problems (08.05.2020 european format)
@@ -47,6 +47,28 @@ if (A3A_hasRHS && (
   isClass (configfile >> "CfgPatches" >> "UK3CB_BAF_Units_Common") &&
   isClass (configfile >> "CfgPatches" >> "UK3CB_BAF_Equipment")
 ) ) then {A3A_has3CBBAF = true; Info("3CB BAF Detected.") };
+
+//CUP Units detection
+if(isClass (configFile >> "CfgFactionClasses" >> "CUP_B_US")) then {
+  _activeCupUnits = true;
+  diag_log format ["%1: [Antistasi] | INFO | initVar | CUP Units Detected.", servertime];
+};
+
+//CUP Weapons detection
+if (isClass (configFile >> "CfgWeapons" >> "CUP_lmg_M60")) then {
+  _activeCupWeapons = true;
+  diag_log format ["%1: [Antistasi] | INFO | initVar | CUP Weapons Detected.", servertime];
+};
+
+//CUP Vehicles detection
+if (isClass (configFile >> "CfgVehicles" >> "CUP_B_T72_CDF")) then {
+  _activeCupVehicles = true;
+  diag_log format ["%1: [Antistasi] | INFO | initVar | CUP Vehicles Detected.", servertime];
+};
+
+if(_activeCupUnits && _activeCupWeapons && _activeCupVehicles) then {
+  A3A_hasCup = true;
+
 
 //3CB Factions Detection
 if (isClass (configfile >> "CfgPatches" >> "UK3CB_Factions_Vehicles_SUV")) then {A3A_has3CBFactions = true; Info("3CB Factions Detected.") };

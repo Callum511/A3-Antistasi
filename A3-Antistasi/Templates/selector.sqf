@@ -62,6 +62,7 @@ private _autoPickAI = {
                     default {"NATO"};
                 };
             };
+            case (A3A_hasCUP): {""}
         };
     };
 
@@ -135,6 +136,11 @@ private _AIFactionEnums = [
     , ["HIDF", A3A_has3CBFactions]
     , ["MACV", A3A_hasVN]
     , ["PAVN", A3A_hasVN]
+    , ["CUP USAF", A3A_hasCUP]
+    , ["CUP AFRF", A3A_hasCUP]
+    , ["CUP BAF", A3A_hasCUP]
+    , ["HIL", A3A_hasCUP]
+    , ["CUP CDF", A3A_hasCUP]
 ];
 private _rebFactionEnums = [
     [_autoPickReb, true]
@@ -144,6 +150,8 @@ private _rebFactionEnums = [
     , ["CNM", A3A_has3CBFactions]
     , ["TKM", A3A_has3CBFactions]
     , ["POF", A3A_hasVN]
+    , ["CUP NAPA", A3A_hasCUP]
+    , ["CUP FIA", A3A_hasCUP]
 ];
 private _civFactionEnums = [
     [_autoPickCiv, true]
@@ -226,6 +234,18 @@ private _pickAITemplate = {
                 case (toLower worldName == "enoch"): { "Templates\Templates\Vanilla\Vanilla_AI_CSAT_Enoch.sqf" };
                 case (toLower worldName == "tanoa"): { "Templates\Templates\Vanilla\Vanilla_AI_CSAT_Tropical.sqf" };
                 default { "Templates\Templates\Vanilla\Vanilla_AI_CSAT_Arid.sqf" };
+            };
+        };
+        case "CUP USAF": {
+            switch(true) do {
+                case (A3A_climate isEqualTo "temperate"): { "Templates\Templates\CUP\CUP_AI_USAF_Temperate.sqf"};
+                case (A3A_climate isEqualTo "arid"): { "Templates\Templates\CUP\CUP_AI_USAF_Arid.sqf"};
+            };
+        };
+        case "CUP AFRF": {
+            switch(true) do {
+                case (A3A_climate isEqualTo "temperate"): { "Templates\Templates\CUP\CUP_AI_AFRF_Temperate.sqf"};
+                case (A3A_climate isEqualTo "arid"): { "Templates\Templates\CUP\CUP_AI_AFRF_Arid.sqf"} ;
             };
         };
     };
