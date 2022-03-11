@@ -1,27 +1,24 @@
-#include "MissionDescription\master.hpp"
+#include "..\missionDescription\master.hpp"
 
-OnLoadName = $STR_antistasi_mission_info_redux_mapname_short_text;
-OnLoadMission = $STR_antistasi_mission_info_redux_blurb_text;
-briefingName = $STR_antistasi_mission_info_redux_mapname_text;
-overviewText = $STR_antistasi_mission_info_redux_description_text;
-
-class CfgFunctions
-{
-    #include "MissionDescription\CfgFunctionsContents.hpp"
-};
+OnLoadName = $STR_antistasi_mission_info_chernarus_winter_mapname_short_text;
+OnLoadMission = $STR_antistasi_mission_info_chernarus_winter_blurb_text;
+briefingName = $STR_antistasi_mission_info_chernarus_winter_mapname_text;
+overviewText = $STR_antistasi_mission_info_chernarus_winter_description_text;
+loadScreen = "Pictures\Mission\pic.jpg"; // NB, this will resolve from root
+overviewPicture = "Pictures\Mission\pic.jpg"; // NB, this will resolve from root
 
 class CfgNotifications
 {
-    #include "MissionDescription\CfgNotificationsContents.hpp"
+    #include "..\missionDescription\CfgNotificationsContents.hpp"
 };
 
 class CfgSounds
 {
-    #include "MissionDescription\CfgSoundsContents.hpp"
+    #include "..\missionDescription\CfgSoundsContents.hpp"
 };
 
 class CfgDebriefing {
-    #include "MissionDescription\CfgDebriefingContents.hpp"
+    #include "..\missionDescription\CfgDebriefingContents.hpp"
 	class End1
 	{
 		title = "V I C T O R Y";
