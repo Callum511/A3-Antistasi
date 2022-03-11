@@ -95,5 +95,11 @@ class CfgMissions
             briefingName = $STR_antistasi_mission_info_vt7_mapname_text;
             directory = "x\A3A\addons\maps\Antistasi_vt7.vt7";
         };
+
+        class Antistasi_Redux
+        {
+            briefingName = $STR_antistasi_mission_info_chernarus_summer_mapname_text;
+            directory = "Antistasi_chernarus.chernarusredux";
+        }
     };
 };
