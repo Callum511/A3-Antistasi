@@ -16,5 +16,6 @@ class chernarus_redux {
 	antennasBlacklistIndex[] = {0, 4, 8, 9};
 	banks[] = {};
 	garrison[] = {{},{"outpost_21"},{},{}};
+	fuelStationTypes[] = {"Land_A_FuelStation_Feed"};
 	climate = "temperate";
 };
