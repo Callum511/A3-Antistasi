@@ -1,4 +1,4 @@
-name = "A3 Antistasi";
+name = "A3 Antistasi - VIDDA TEST";
 author = "A3-Antistasi dev team";
 logo = "";
 logoOver = "";

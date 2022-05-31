@@ -13,4 +13,5 @@ class mapInfo {
     #include "Antistasi_tem_anizay.tem_anizay\mapInfo.hpp"
     #include "Antistasi_Tembelan.Tembelan\mapInfo.hpp"
     #include "Antistasi_vt7.vt7\mapInfo.hpp"
+    #include "Antistasi_Vidda.blud_vidda\mapInfo.hpp"
 };
