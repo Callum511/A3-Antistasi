@@ -25,6 +25,19 @@ if(_side != Occupants and _side != Invaders) exitWith {
 //If groupleader is down, dont call support
 if !(_groupLeader call A3A_fnc_canFight) exitWith {};
 
+private _vehType = typeOf vehicle _target;
+private _allTurrets = configProperties [configFile >> "CfgVehicles" >> _vehType >> "Turrets"]; // get all turrets
+private _isArtillery = _allTurrets findIf { getNumber (_x >> "elevationMode") != 0 } != -1; // if there is a turret with elevationMode != 0, it's an artillery
+
+//If the target is not artillery, check to see if the group knowsAbout the target. if it is less than 2, dont call support
+if(!_isArtillery) then
+{
+    if(!(_group knowsAbout _target > 2)) exitWith {
+        ServerDebug_2("Group %1 does not know about %2, not calling support", _group, _target);
+    };
+};
+
+
 if((_group getVariable ["A3A_canCallSupportAt", -1]) > time) exitWith {};
 
 private _timeToCallSupport = (10 + random 5) / A3A_balancePlayerScale;
