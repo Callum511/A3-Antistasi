@@ -407,6 +407,12 @@ class CfgFunctions
             class keyActions {};
         };
 
+        class Manufacturing {
+            file = QPATHTOFOLDER(functions\Manufacturing);
+            class manufacture {};
+            class countTiles {};
+        }
+
         class LTC {
             file = QPATHTOFOLDER(functions\LTC);
             class canLoot {};

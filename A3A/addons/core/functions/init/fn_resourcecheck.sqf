@@ -93,6 +93,9 @@ while {true} do
 	server setVariable ["hr", _hrAdd + (server getVariable "hr"), true];
 	server setVariable ["resourcesFIA", _resAdd + (server getVariable "resourcesFIA"), true];
 
+	// Manufacture gear
+	[] call A3A_fnc_manufacture;
+
 	bombRuns = bombRuns + 0.25 * ({sidesX getVariable [_x,sideUnknown] == teamPlayer} count airportsX);
 	publicVariable "bombRuns";
 
