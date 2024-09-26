@@ -63,11 +63,13 @@ if (A3A_hasTFAR) then {_initialRebelEquipment append ["tf_microdagr", "tf_anprc1
 if (A3A_hasTFAR && startWithLongRangeRadio) then {
     _initialRebelEquipment pushBack "tf_anprc155";
     _initialRebelEquipment pushBack "tf_anprc155_coyote";
+    _initialRebelEquipment pushBack "tf_rt1523g";
 };
 if (A3A_hasTFARBeta) then {_initialRebelEquipment append ["TFAR_microdagr", "TFAR_anprc154"]};
 if (A3A_hasTFARBeta && startWithLongRangeRadio) then {
     _initialRebelEquipment pushBack "TFAR_anprc155";
     _initialRebelEquipment pushBack "TFAR_anprc155_coyote";
+    _initialRebelEquipment pushBack "TFAR_rt1523g";
 };
 
 _initialRebelEquipment append ["Chemlight_blue","Chemlight_green","Chemlight_red","Chemlight_yellow"];
